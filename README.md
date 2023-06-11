@@ -4,6 +4,8 @@
 
 **Buget-LXP** est une application pour afficher des tableaux et graphiques en lien avec la comptabilité du Lycée Expérimental de Saint-Nazaire.
 
+L'application est déployée automatiquement sur **Vercel** : https://budget-lxp.vercel.app
+
 Cette application se base sur des données `xls` exportées via le logiciel comptable **Op@le**.
 
 La librairie de traitement des données en table [Pandas](https://pandas.pydata.org/) permet de traiter et convertir ces données en format `json`.
