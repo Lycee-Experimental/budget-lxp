@@ -7,22 +7,23 @@
   <title>Dashboard</title>
   <style>
     .animated-button {
-      animation-duration: 1s;
-      animation-fill-mode: both;
-      animation-iteration-count: infinite;
-      animation-name: pulse;
+      transform: scale(1);
+      transition: transform 0.2s;
+      width: 100%;
     }
-    
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.2);
-      }
-      100% {
-        transform: scale(1);
-      }
+
+    .animated-button:hover {
+      transform: scale(1.2);
+    }
+
+    .buttons-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .buttons-container .button {
+      flex: 0 0 200px; /* Fixed width for the buttons */
+      margin: 5px 10px; /* Increase the horizontal margin */
     }
   </style>
 </head>
@@ -31,7 +32,7 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <h1 class="title">Budget-LXP</h1>
-        <div class="buttons is-centered">
+        <div class="buttons-container">
           <a href="/camembert" class="button is-primary is-large animated-button">
             Camembert
           </a>
@@ -42,6 +43,19 @@
       </div>
     </div>
   </section>
+
+  <script>
+    const buttons = document.querySelectorAll('.animated-button');
+    buttons.forEach(button => {
+      button.addEventListener('mouseover', () => {
+        button.classList.add('animated-button');
+      });
+
+      button.addEventListener('mouseout', () => {
+        button.classList.remove('animated-button');
+      });
+    });
+  </script>
 </body>
 </html>
 
