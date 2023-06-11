@@ -20,6 +20,14 @@
             width: 100%;
             height: 100%;
         }
+
+div.tooltip {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 5px;
+  visibility: hidden;
+}
     </style>
 </head>
 <body> 
@@ -93,9 +101,30 @@
                 .style("cursor", "pointer")
                 .on("click", clicked);
 
+
+
             // Ajout des infobulles sur les segments
-            path.append("title")
-                .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
+path.on("mouseover", function (event, d) {
+    const ancestors = d.ancestors().map(d => d.data.name).reverse().join("/");
+    const value = format(d.value);
+    tooltip.html(`${ancestors}<br>${value}`)
+      .style("visibility", "visible");
+      
+    // Update tooltip position on mouseover
+    tooltip.style("top", event.pageY + "px")
+      .style("left", event.pageX + "px");
+  })
+  .on("mousemove", function (event) {
+    // Update tooltip position on mousemove
+    tooltip.style("top", (event.pageY-10) + "px")
+      .style("left", (event.pageX+10) + "px");
+  })
+  .on("mouseout", function () {
+    tooltip.style("visibility", "hidden");
+  });
+
+//            path.append("title")
+//                .text(d => `${d.ancestors().map(d => d.data.name).reverse().join("/")}\n${format(d.value)}`);
 
             // Ajout des étiquettes du diagramme
             const label = g.append("g")
@@ -117,6 +146,15 @@
                 .attr("fill", "none")
                 .attr("pointer-events", "all")
                 .on("click", clicked);
+
+            //Ajouter des tooltips
+            var tooltip = d3.select("body")
+              .append("div")
+              .style("position", "absolute")
+              .style("background", "#fff")
+              .style("border", "1px solid #ddd")
+              .style("padding", "5px")
+              .style("visibility", "hidden");
 
             // Fonction de gestion de l'événement de clic sur un segment
             function clicked(event, p) {
