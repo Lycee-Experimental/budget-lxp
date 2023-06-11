@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <title>Dashboard</title>
+  <style>
+    .animated-button {
+      animation-duration: 1s;
+      animation-fill-mode: both;
+      animation-iteration-count: infinite;
+      animation-name: pulse;
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title">Budget-LXP</h1>
+        <div class="buttons is-centered">
+          <a href="/camembert" class="button is-primary is-large animated-button">
+            Camembert
+          </a>
+          <a href="/sunburst" class="button is-warning is-large animated-button">
+            Sunburst
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
+

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagramme en Camembert</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        #chart {
+            width: 100%;
+            height: 90vh;
+        }
+        #total {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 10vh;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart"></div>
+    <div id="total"></div>
+    
+    <script>
+        d3.json('/data').then(showdata);
+        function showdata(data) {
+            // Calculer la somme des montants pour chaque catégorie
+            var categories_montants = {};
+            data.forEach(function(d) {
+                var categorie = d['CGR de niveau 3'];
+                var montant = d['Montant colonne 2'];
+                if (!categories_montants[categorie]) {
+                    categories_montants[categorie] = 0;
+                }
+                categories_montants[categorie] += montant;
+            });
+            
+            // Convertir les données en format adapté pour le diagramme en camembert
+            var pieData = Object.keys(categories_montants).map(function(categorie) {
+                return {
+                    categorie: categorie,
+                    montant: categories_montants[categorie]
+                };
+            });
+            
+            // Créer le diagramme en camembert dans l'élément d'ID 'chart'
+            var container = document.getElementById('chart');
+            var width = container.clientWidth;
+            var height = container.clientHeight;
+            var radius = Math.min(width, height) / 2;
+            
+            var svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .append("g")
+                .attr("transform", `translate(${width / 2},${height / 2})`);
+
+            var color = d3.scaleOrdinal()
+                .domain(pieData.map(function(d) { return d.categorie; }))
+                .range(d3.quantize(d3.interpolateRainbow, pieData.length));
+
+            var pie = d3.pie()
+                .value(function(d) { return d.montant; })
+                .sort(null);
+            
+            var arc = d3.arc()
+                .outerRadius(radius - 10)
+                .innerRadius(0);
+            
+            var arcs = svg.selectAll(".arc")
+                .data(pie(pieData))
+                .enter()
+                .append("g")
+                .attr("class", "arc");
+            
+            arcs.append("path")
+                .attr("d", arc)
+                .attr("fill", function(d) { return color(d.data.categorie); })
+                .on("mouseover", function(event, d) {
+                    d3.select(this).attr("opacity", 0.8);
+                    tooltip.html("<strong>Catégorie: </strong>" + d.data.categorie + "<br>" +
+                                 "<strong>Montant: </strong>" + categories_montants[d.data.categorie] + " €")
+                        .style("visibility", "visible");
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("top", (event.pageY - 10) + "px")
+                        .style("left", (event.pageX + 10) + "px");
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("opacity", 1);
+                    tooltip.style("visibility", "hidden");
+                });
+            
+            var tooltip = d3.select("body")
+                .append("div")
+                .style("position", "absolute")
+                .style("background", "#fff")
+                .style("border", "1px solid #ddd")
+                .style("padding", "5px")
+                .style("visibility", "hidden");
+            
+            var total = d3.sum(pieData, function(d) { return d.montant; });
+            d3.select("#total")
+                .html("<strong>Total des dépenses :</strong> " + total + " €");
+        };
+    </script>
+</body>
+</html>
+
