@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Prendre en compte les modifications de template
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-# Page d'accueil'
+# Page d'accueil
 @app.route('/')
 def index():
     return render_template('index.html')
