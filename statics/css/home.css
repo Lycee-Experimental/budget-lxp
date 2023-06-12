@@ -1,0 +1,19 @@
+.animated-button {
+    transform: scale(1);
+    transition: transform 0.2s;
+    width: 100%;
+  }
+
+  .animated-button:hover {
+    transform: scale(1.2);
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .buttons-container .button {
+    flex: 0 0 200px; /* Fixed width for the buttons */
+    margin: 5px 10px; /* Increase the horizontal margin */
+  }
