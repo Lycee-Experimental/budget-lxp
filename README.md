@@ -44,6 +44,10 @@ Vous accèderez alors à l'application à l'addresse : [http://127.0.0.1:5000](h
 
 ## Quelques exemples d'utilisation de d3.js
 
+- Fonctionement du sunburst : 
+  - https://ncoughlin.com/posts/d3-sunburst/
+  - https://www.datavis.fr/d3js/sunburst-chart
+  
 - https://github.com/d3/d3/wiki/Gallery
 
 - https://www.react-graph-gallery.com/
