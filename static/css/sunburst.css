@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#chart {
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+div.tooltip {
+position: absolute;
+background: #fff;
+border: 1px solid #ddd;
+padding: 5px;
+visibility: hidden;
+}
