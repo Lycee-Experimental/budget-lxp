@@ -35,29 +35,34 @@ def create_node(name):
 # Route générant les données nécessaires pour le sunburst
 @app.route('/sunburstdata')
 def get_sunburst_data():
-    # URL du fichier Excel contenant les données
+    # URL des fichiers Excel contenant les données
     excel_url = 'https://cloud.lycee-experimental.org/s/LMw46oacXzBgXLw/download/D%C3%A9penses.xlsx'
+    excel_2022_url = 'https://cloud.lycee-experimental.org/s/aq4ZSABm2GS2eNL/download/D%C3%A9penses2022.xlsx'
     
-    # Téléchargement du fichier Excel en utilisant requests
+    # Téléchargement des fichiers Excel en utilisant requests
     response = requests.get(excel_url)
-    
-    # Lecture du contenu du fichier Excel avec Pandas
-    df = pd.read_excel(io.BytesIO(response.content))
+    response_2022 = requests.get(excel_2022_url)
 
-    # Création des colonne Service et Categorie à partir de "CGR A"
-    df[['tmp', 'Service', 'Catégorie']] = df['CGR A'].str.split().values.tolist()
-    
+    # Lecture du contenu des fichiers Excel avec Pandas
+    df = pd.read_excel(io.BytesIO(response.content))
+    df2 = pd.read_excel(io.BytesIO(response_2022.content))
+
+    # Création des colonne Domaine et Categorie à partir de "CGR A"
+    df[['tmp', 'Domaine', 'Activité']] = df['CGR A'].str.split().values.tolist()
+
+    # Fusion des deux DataFrames    
+    merged_df = pd.concat([df, df2])
     # Remplacement des valeurs NaN par une chaîne vide
-    df.fillna('', inplace=True)
-    
+    merged_df.fillna('', inplace=True)
+
     # Création de la structure pour le sunburst
     structure = create_node('')
 
     # Parcours des lignes du DataFrame
-    for _, row in df.iterrows():
+    for _, row in merged_df.iterrows():
         # Récupération des valeurs des colonnes
-        service = row['Service']
-        categorie = row['Catégorie']
+        domaine = row['Domaine']
+        activite = row['Activité']
         libelle_compte = row['Libellé compte']
         fournisseur = row['Nom du fournisseur / élève']
         libelle = row['Libellé 1']
@@ -66,7 +71,7 @@ def get_sunburst_data():
         
         # Parcours des niveaux de la structure
         current_node = structure
-        for level in [service, categorie, libelle_compte, fournisseur]:
+        for level in [domaine, activite, libelle_compte, fournisseur]:
             # Vérification si le noeud existe déjà, sinon création
             node = next((n for n in current_node['children'] if n['name'] == level), None)
             if not node:
