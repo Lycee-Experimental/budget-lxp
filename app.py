@@ -61,11 +61,11 @@ def get_sunburst_data():
     # Parcours des lignes du DataFrame
     for _, row in merged_df.iterrows():
         # Récupération des valeurs des colonnes
-        domaine = row['Domaine']
-        activite = row['Activité']
-        libelle_compte = row['Libellé compte']
-        fournisseur = row['Nom du fournisseur / élève']
-        libelle = row['Libellé 1']
+        domaine = row['Domaine'].strip()
+        activite = row['Activité'].strip()
+        libelle_compte = row['Libellé compte'].strip()
+        fournisseur = row['Nom du fournisseur / élève'].strip()
+        libelle = row['Libellé 1'].strip()
         date = row['Date comptable facture']
         value = row['Prix réceptionné TTC']
         
