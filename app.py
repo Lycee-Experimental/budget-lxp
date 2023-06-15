@@ -59,16 +59,44 @@ def get_sunburst_data():
     structure = create_node('')
 
     # Parcours des lignes du DataFrame
+    traduction = {
+            'ENS': 'Pédagogie',
+            'FONCT': 'Fonctionnement',
+            '0LEXART': 'Dépenses artistiques',
+            '0LEXDOCUM': 'Documentation',
+            '0LEXPEDAG': 'Dépenses pédagogiques',
+            '0LEXSORTI': 'Sorties et voyages',
+            '0LEXPASS': 'Assurances',
+            '0LEXPCARB': 'Carburant',
+            '0LEXPCONT': 'Contrats maintenance',
+            '0LEXPENT': 'Entretien/réparation',
+            '0LEXPEQ': 'Petit équipement',
+            '0LEXPFOUR': 'Fournitures',
+            '0LEXPHYG': 'Hygiène',
+            '0LEXPLOC': 'Locations',
+            '0LEXPPTT': 'Timbres, téléphone, internet',
+            '0LEXPREC': 'Frais de réception',
+            '0LEXPVEHI': 'Entretien vehicule',
+            '0LEXPVIAB': 'Viabilisation',
+            '13REPLEXP': 'Reprographie',
+            '2 CEA XP' : 'CEA (Région)',
+            '040ALXP' : 'Communication extérieure',
+            'REPAS' : 'Repas',
+            '0LEXPMO' : 'Nourriture',
+            'TRAVAU' : 'Travaux',
+            '0LEXPTVX' : 'Travaux'
+        }
+
     for _, row in merged_df.iterrows():
         # Récupération des valeurs des colonnes
-        domaine = row['Domaine']
-        activite = row['Activité']
+        domaine = traduction[row['Domaine']]
+        activite = traduction[row['Activité']]
         libelle_compte = row['Libellé compte']
         fournisseur = row['Nom du fournisseur / élève']
         libelle = row['Libellé 1']
         date = row['Date comptable facture']
         value = row['Prix réceptionné TTC']
-        
+    
         # Parcours des niveaux de la structure
         current_node = structure
         for level in [domaine, activite, libelle_compte, fournisseur]:
