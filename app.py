@@ -58,7 +58,6 @@ def get_sunburst_data():
     # Création de la structure pour le sunburst
     structure = create_node('')
 
-    # Parcours des lignes du DataFrame
     traduction = {
             'ENS': 'Pédagogie',
             'FONCT': 'Fonctionnement',
@@ -87,6 +86,7 @@ def get_sunburst_data():
             '0LEXPTVX' : 'Travaux'
         }
 
+    # Parcours des lignes du DataFrame
     for _, row in merged_df.iterrows():
         # Récupération des valeurs des colonnes
         domaine = traduction[row['Domaine']]
