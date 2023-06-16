@@ -81,9 +81,16 @@
 
             // Ajout des infobulles sur les segments
 path.on("mouseover", function (event, d) {
-    const ancestors = d.ancestors().map(d => d.data.name).reverse().join("/");
-    const value = format(d.value);
-    tooltip.html(`${ancestors}<br>${value}`)
+    //const ancestors = d.ancestors().map(d => d.data.name).reverse().join("/");
+    const ancestors = d.ancestors().map(d => d.data.name).reverse();
+    const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
+    let html = '';
+    for (let i = 1; i < ancestors.length; i++) {
+        html += `<tr><th>${list[i-1]}</th><td>${ancestors[i]}<td><tr>`
+      };
+    d.data.date && (html += `<tr><th>Date</th><td>${d.data.date}<td><tr>`);
+    html += `<tr><th>Montant</th><td>${format(d.value)} €<td><tr>`;
+    tooltip.html(`<table>${html}</table>`)
       .style("visibility", "visible");
       
     // Update tooltip position on mouseover

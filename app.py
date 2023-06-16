@@ -49,7 +49,7 @@ def get_sunburst_data():
 
     # Création des colonne Domaine et Categorie à partir de "CGR A"
     df[['tmp', 'Domaine', 'Activité']] = df['CGR A'].str.split().values.tolist()
-
+    df2['Date comptable facture'] = df2['Date comptable facture'].dt.strftime("%d/%m/%Y")
     # Fusion des deux DataFrames    
     merged_df = pd.concat([df, df2])
     # Remplacement des valeurs NaN par une chaîne vide
