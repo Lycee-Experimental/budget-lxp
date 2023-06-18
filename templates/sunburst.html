@@ -133,11 +133,7 @@ path.on("mouseover", function (event, d) {
             //Ajouter des tooltips
             var tooltip = d3.select("body")
               .append("div")
-              .style("position", "absolute")
-              .style("background", "#fff")
-              .style("border", "1px solid #ddd")
-              .style("padding", "5px")
-              .style("visibility", "hidden");
+              .attr("id", "tooltip")
 
             // Fonction de gestion de l'événement de clic sur un segment
             function clicked(event, p) {

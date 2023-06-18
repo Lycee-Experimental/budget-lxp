@@ -10,6 +10,14 @@ html, body {
     height: 100%;
 }
 
+#tooltip {
+position: absolute;
+background: #fff;
+border: 1px solid #ddd;
+padding: 5px;
+visibility: hidden;
+}
+
 svg {
     width: 100%;
     height: 100%;
