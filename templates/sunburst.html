@@ -60,7 +60,7 @@
             // Définition de variables dans lesquelles on va stocker le niveau de hierarchie et le parent
             let depth = "";
             let monparent = "";
-            
+
             // Tracé des segments du diagramme
             const path = g.append("g")
                 .selectAll("path")
@@ -74,8 +74,8 @@
                         monparent = d.parent;
                         color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, d.parent.children.length +1));
                     };
+                    // On augmente la luminosité des couleurs en fonction du niveau de hierarchie
                     return d3.color(color(d.data)).brighter(d.depth/3);
-                    //return parentColor;
                   })
                 .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 1 : 0.6) : 0)
                 .attr("pointer-events", d => arcVisible(d.current) ? "auto" : "none")
