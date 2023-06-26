@@ -4,7 +4,7 @@
     <title>Diagramme en Camembert</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="/static/css/sunburst.css">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
 
@@ -109,33 +109,31 @@
 
 
             // Ajout des infobulles sur les segments
-path.on("mouseover", function (event, d) {
-    //const ancestors = d.ancestors().map(d => d.data.name).reverse().join("/");
-    const ancestors = d.ancestors().map(d => d.data.name).reverse();
-    const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
-    let html = '';
-    for (let i = 1; i < ancestors.length; i++) {
-        html += `<tr><th>${list[i-1]}</th><td>${ancestors[i]}<td><tr>`
-      };
-    d.data.date && (html += `<tr><th>Date</th><td>${d.data.date}<td><tr>`);
-    html += `<tr><th>Montant</th><td>${format(d.value)} €<td><tr>`;
-    tooltip.html(`<table>${html}</table>`)
-      .style("visibility", "visible");
-      
-    // Update tooltip position on mouseover
-    tooltip.style("top", event.pageY + "px")
-      .style("left", event.pageX + "px");
-      
-  })
-  .on("mousemove", function (event) {
-    // Update tooltip position on mousemove
-    tooltip.style("top", (event.pageY-10) + "px")
-      .style("left", (event.pageX+10) + "px");
-  })
-  .on("mouseout", function () {
-    tooltip.style("visibility", "hidden");
-  });
-
+            path.on("mouseover", function (event, d) {
+                //const ancestors = d.ancestors().map(d => d.data.name).reverse().join("/");
+                const ancestors = d.ancestors().map(d => d.data.name).reverse();
+                const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
+                let html = '';
+                for (let i = 1; i < ancestors.length; i++) {
+                    html += `<tr><th>${list[i-1]}</th><td>${ancestors[i]}<td><tr>`
+                };
+                d.data.date && (html += `<tr><th>Date</th><td>${d.data.date}<td><tr>`);
+                html += `<tr><th>Montant</th><td>${format(d.value)} €<td><tr>`;
+                tooltip.html(`<table>${html}</table>`)
+                .style("visibility", "visible");
+                
+                // Update tooltip position on mouseover
+                tooltip.style("top", event.pageY + "px")
+                .style("left", event.pageX + "px"); 
+            })
+            .on("mousemove", function (event) {
+                // Update tooltip position on mousemove
+                tooltip.style("top", (event.pageY-10) + "px")
+                .style("left", (event.pageX+10) + "px");
+            })
+            .on("mouseout", function () {
+                tooltip.style("visibility", "hidden");
+            });
 
             // Ajout des étiquettes du diagramme
             const label = g.append("g")
@@ -205,11 +203,11 @@ path.on("mouseover", function (event, d) {
                 const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
                 let html = '';
                 for (let i = 1; i < ancestors.length; i++) {
-                    html += `<tr><th>${list[i-1]}</th><td> : ${ancestors[i]}<td><tr></br>`
+                    html += `<tr><th>${list[i-1]}</th><td> : ${ancestors[i]}<td><tr>`
                 };
-                data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr></br>`);
+                data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr>`);
                 html += `<tr><th>Montant</th><td> : ${format(data.value)} €<td><tr>`;
-                info.html(`${html}`)
+                info.html(`<table>${html}</table>`)
                 .style("visibility", "visible");
             }
             showInfo(root);
