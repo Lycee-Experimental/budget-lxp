@@ -52,9 +52,13 @@
                     (root);
             };
 
-            // Formatage des valeurs numériques
-            const format = d3.format(",d");
-
+            // Formatage des valeurs numériques avec un espace entre les milliers
+            const format = (number) => {
+                const formatter = d3.format(",.0f");
+                const formattedValue = formatter(number);
+                const replacedCommas = formattedValue.replace(",", " ");
+                return replacedCommas;
+            };
             // Création de la structure hiérarchique des données
             const root = partition(data);
 
@@ -189,28 +193,26 @@ path.on("mouseover", function (event, d) {
 
 
                     //Mise à jour des informations de navigation
-
                     showInfo(p);
 
             }
             
             //Affichage des informations de navigation
-
             function showInfo(data) {
-    var info = d3.select("#info");
+                var info = d3.select("#info");
 
-    const ancestors = data.ancestors().map(data => data.data.name).reverse();
-    const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
-    let html = '';
-    for (let i = 1; i < ancestors.length; i++) {
-        html += `<tr><th>${list[i-1]}</th><td> : ${ancestors[i]}<td><tr></br>`
-    };
-    data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr></br>`);
-    html += `<tr><th>Montant</th><td> : ${format(data.value)} €<td><tr>`;
-    info.html(`${html}`)
-      .style("visibility", "visible");
-}
-showInfo(root);
+                const ancestors = data.ancestors().map(data => data.data.name).reverse();
+                const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
+                let html = '';
+                for (let i = 1; i < ancestors.length; i++) {
+                    html += `<tr><th>${list[i-1]}</th><td> : ${ancestors[i]}<td><tr></br>`
+                };
+                data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr></br>`);
+                html += `<tr><th>Montant</th><td> : ${format(data.value)} €<td><tr>`;
+                info.html(`${html}`)
+                .style("visibility", "visible");
+            }
+            showInfo(root);
 
 
             // Fonction pour déterminer la visibilité d'un segment
