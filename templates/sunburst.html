@@ -58,8 +58,9 @@
                     .size([2 * Math.PI, root.height + 1])
                     (root);
             };
-         // Formatage des valeurs numériques avec un espace entre les milliers
-         const format = (number) => {
+
+            // Formatage des valeurs numériques avec un espace entre les milliers
+            const format = (number) => {
                 const formatter = d3.format(",.0f");
                 const formattedValue = formatter(number);
                 const replacedCommas = formattedValue.replace(",", " ");
@@ -200,14 +201,12 @@ path.on("mouseover", function (event, d) {
 
 
                     //Mise à jour des informations de navigation
-
                     showInfo(p);
                     pourcentage(p);
 
             }
             
             //Affichage des informations de navigation
-
             function showInfo(data) {
                 var info = d3.select("#info");
 
@@ -223,6 +222,7 @@ path.on("mouseover", function (event, d) {
                 .style("visibility", "visible");
             }
             showInfo(root);
+
 
 // Pourcentage du budget dépensé
 function pourcentage(d) {
@@ -282,6 +282,7 @@ function pourcentage_total(d) {
   pourcentage_tot.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
     <center>${pourcentage_budget.toFixed(1)} % (${format(d.value)} €) de ${format(budget)} €</center>`);
 }
+
 
 
 pourcentage_total(root);
