@@ -8,6 +8,13 @@ html, body {
 #chart {
     width: 100%;
     height: 100%;
+    position: relative;
+    top: -6%;
+}
+
+div.card#informations{
+    position: absolute;
+    transition: transform 1s;
 }
 
 #tooltip {
