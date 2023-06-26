@@ -83,19 +83,30 @@ def get_sunburst_data():
             'REPAS' : 'Repas',
             '0LEXPMO' : 'Nourriture',
             'TRAVAU' : 'Travaux',
-            '0LEXPTVX' : 'Travaux'
+            '0LEXPTVX' : 'Travaux',
+            'FOURNITURES NON STOCKABLES - GAZ' : 'Gaz',
+            'FOURNITURES NON STOCKABLES - ELECTRICITE' : 'Electricité',
+            'FOURNITURES NON STOCKABLES - EAU' : 'Eau',
+            'AUTRES FOURNITURES (MAT. MOB. OUTIL. NON IMMOBILISABLES)' : 'Autres fournitures',
+            'FOURNITURES ADMINISTRATIVES' : 'Fournitures admin',
+            'FOURNITURES NON STOCKABLES - CARBURANTS ET LUBRIFIANTS' : 'Carburants et lubrifiants'
         }
+    def fonct_traduction(cle):
+        if cle in traduction:
+            return traduction[cle]
+        else:
+            return cle
 
     # Parcours des lignes du DataFrame
     for _, row in merged_df.iterrows():
         # Récupération des valeurs des colonnes
-        domaine = traduction[row['Domaine']]
-        activite = traduction[row['Activité']]
-        libelle_compte = row['Libellé compte'].strip()
-        fournisseur = row['Nom du fournisseur / élève'].strip()
-        libelle = row['Libellé 1'].strip()
-        date = row['Date comptable facture']
-        value = row['Prix réceptionné TTC']
+        domaine = fonct_traduction(row['Domaine'])
+        activite = fonct_traduction(row['Activité'])
+        libelle_compte = fonct_traduction(row['Libellé compte'].strip())
+        fournisseur = fonct_traduction(row['Nom du fournisseur / élève'].strip())
+        libelle = fonct_traduction(row['Libellé 1'].strip())
+        date = fonct_traduction(row['Date comptable facture'])
+        value = fonct_traduction(row['Prix réceptionné TTC'])
     
         # Parcours des niveaux de la structure
         current_node = structure
