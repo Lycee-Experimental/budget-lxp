@@ -19,12 +19,19 @@
                 <p class="title">Informations</p>
     
                 <p class="subtitle" id="info"></p>
+
+            <div id="pourcentage"></div>
+
+                <p class="title">Total</p>
+            <div id="pourcentage_tot"></div>
             </div>
+
         </div>
     </div>
 
     <div id="chart"></div>
     <script>
+
         // Définition de la fonction de création du diagramme
         const chart = data => {
             const container = document.getElementById('chart');
@@ -59,6 +66,7 @@
                 const replacedCommas = formattedValue.replace(",", " ");
                 return replacedCommas;
             };
+
             // Création de la structure hiérarchique des données
             const root = partition(data);
 
@@ -192,6 +200,7 @@
 
                     //Mise à jour des informations de navigation
                     showInfo(p);
+                    pourcentage(p);
 
             }
             
@@ -212,6 +221,69 @@
             }
             showInfo(root);
 
+
+// Pourcentage du budget dépensé
+function pourcentage(d) {
+  const budget = 160000;
+  const pourcentage_budget = d.value * 100 / budget;
+
+  var pourcentage = d3.select('#pourcentage');
+
+  var conditions = [
+    {min: 90, classe: "is-danger"},
+    {min: 70, classe: "is-warning"},
+    {min: 50, classe: "is-link"},
+    {min: 40, classe: "is-info"},
+    {min: 20, classe: "is-primary"},
+    {min: 0, classe: "is-success"}
+  ];
+
+  var couleur_pourcentage = "is-success";
+  for (var i = 0; i < conditions.length; i++) {
+    if (pourcentage_budget > conditions[i].min) {
+      couleur_pourcentage = conditions[i].classe;
+      break;
+    }
+  }
+
+  pourcentage.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
+    <center>${pourcentage_budget.toFixed(1)} % (${format(d.value)} €) de ${format(budget)} €</center>`);
+}
+
+
+    pourcentage(root);
+
+// Pourcentage du budget dépensé total
+function pourcentage_total(d) {
+  const budget = 160000;
+  const pourcentage_budget = d.value * 100 / budget;
+
+  var pourcentage_tot = d3.select('#pourcentage_tot');
+
+  var conditions = [
+    {min: 90, classe: "is-danger"},
+    {min: 70, classe: "is-warning"},
+    {min: 50, classe: "is-link"},
+    {min: 40, classe: "is-info"},
+    {min: 20, classe: "is-primary"},
+    {min: 0, classe: "is-success"}
+  ];
+
+  var couleur_pourcentage = "is-success";
+  for (var i = 0; i < conditions.length; i++) {
+    if (pourcentage_budget > conditions[i].min) {
+      couleur_pourcentage = conditions[i].classe;
+      break;
+    }
+  }
+
+  pourcentage_tot.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
+    <center>${pourcentage_budget.toFixed(1)} % (${format(d.value)} €) de ${format(budget)} €</center>`);
+}
+
+
+
+pourcentage_total(root);
 
             // Fonction pour déterminer la visibilité d'un segment
             function arcVisible(d) {
