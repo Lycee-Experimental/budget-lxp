@@ -10,6 +10,11 @@ html, body {
     height: 100%;
 }
 
+div.card#informations{
+    position: absolute;
+    transition: transform 1s;
+}
+
 #tooltip {
 position: absolute;
 background: #fff;

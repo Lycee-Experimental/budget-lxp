@@ -4,12 +4,26 @@
     <title>Diagramme en Camembert</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <link rel="stylesheet" href="/static/css/sunburst.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
 
 </head>
+
 <body> 
 
-    <div id="chart"></div>
+                <!-- Information Card -->
+    <div class="columns">
+        <div class="card column is-one-fifth" id="informations">
+            <div class="card-content">
+                <p class="title">Informations</p>
+    
+                <p class="subtitle" id="info"></p>
+            </div>
+        </div>
+    </div>
 
+    <div id="chart"></div>
     <script>
         // Définition de la fonction de création du diagramme
         const chart = data => {
@@ -17,7 +31,7 @@
             const clientWidth = container.clientWidth;
             const clientHeight = container.clientHeight;
             const width = Math.min(clientWidth, clientHeight)
-            const radius = width / 6;
+            const radius = width / 6.5;
 
             // Configuration de l'arc pour le tracé des segments
             const arc = d3.arc()
@@ -76,6 +90,8 @@
                     };
                     // On augmente la luminosité des couleurs en fonction du niveau de hierarchie
                     return d3.color(color(d.data)).brighter(d.depth/3);
+
+                    
                   })
                 .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 1 : 0.6) : 0)
                 .attr("pointer-events", d => arcVisible(d.current) ? "auto" : "none")
@@ -105,6 +121,7 @@ path.on("mouseover", function (event, d) {
     // Update tooltip position on mouseover
     tooltip.style("top", event.pageY + "px")
       .style("left", event.pageX + "px");
+      
   })
   .on("mousemove", function (event) {
     // Update tooltip position on mousemove
@@ -169,7 +186,32 @@ path.on("mouseover", function (event, d) {
                 }).transition(t)
                     .attr("fill-opacity", d => +labelVisible(d.target))
                     .attrTween("transform", d => () => labelTransform(d.current));
+
+
+                    //Mise à jour des informations de navigation
+
+                    showInfo(p);
+
             }
+            
+            //Affichage des informations de navigation
+
+            function showInfo(data) {
+    var info = d3.select("#info");
+
+    const ancestors = data.ancestors().map(data => data.data.name).reverse();
+    const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
+    let html = '';
+    for (let i = 1; i < ancestors.length; i++) {
+        html += `<tr><th>${list[i-1]}</th><td> : ${ancestors[i]}<td><tr></br>`
+    };
+    data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr></br>`);
+    html += `<tr><th>Montant</th><td> : ${format(data.value)} €<td><tr>`;
+    info.html(`${html}`)
+      .style("visibility", "visible");
+}
+showInfo(root);
+
 
             // Fonction pour déterminer la visibilité d'un segment
             function arcVisible(d) {
@@ -201,8 +243,11 @@ path.on("mouseover", function (event, d) {
             }).catch(error => {
                 console.log(error);
             });
+            
         });
     </script>
+
+        </div>
 </body>
 </html>
 
