@@ -306,15 +306,19 @@
 
         // Attente du chargement du document HTML
         document.addEventListener("DOMContentLoaded", function(event) {
+            // Vérification de la présence du paramètre budget_privi dans l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const budgetPrevi = urlParams.get('budget_previ');
+            const dataUrl = budgetPrevi ? '/data?budget_previ=1' : '/data';
+          
             // Récupération des données JSON pour le diagramme
-            d3.json('/sunburstdata').then(data => {
-                // Appel de la fonction de création du diagramme avec les données
-                const chartContainer = document.getElementById('chart');
-                chartContainer.appendChild(chart(data));
+            d3.json(dataUrl).then(data => {
+              // Appel de la fonction de création du diagramme avec les données
+              const chartContainer = document.getElementById('chart');
+              chartContainer.appendChild(chart(data));
             }).catch(error => {
-                console.log(error);
+              console.log(error);
             });
-            
         });
     </script>
 

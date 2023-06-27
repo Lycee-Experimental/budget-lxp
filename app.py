@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 import pandas as pd
 import requests
 import io
@@ -9,6 +9,128 @@ app = Flask(__name__)
 
 # Activation du rechargement automatique des templates
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+budget_previ = {   'name': '',
+    'children' : [{  'name': 'FONCT',
+                    'children' : [  {   'name': '0LEXPASS',
+                                        'value' : 2000
+                                    },
+                                    {   'name': '0LEXPCARB',
+                                        'value' : 1000
+                                    },
+                                    {   'name': '0LEXPCONT',
+                                        'value' : 6500
+                                    },
+                                    {   'name': '0LEXPENT',
+                                        'value' : 3400
+                                    },
+                                    {   'name': '0LEXPEQ',
+                                        'value' : 3000
+                                    },
+                                    {   'name': '0LEXPFOUR',
+                                        'value' : 3000
+                                    },
+                                    {   'name': '0LEXPHYG',
+                                        'value' : 4000
+                                    },
+                                    {   'name': '0LEXPLOC',
+                                        'value' : 116000
+                                    },
+                                    {   'name': '0LEXPPTT',
+                                        'value' : 3500
+                                    },
+                                    {   'name': '0LEXPREC',
+                                        'value' : 1500
+                                    },
+                                    {   'name': '0LEXPVEHI',
+                                        'value' : 2000
+                                    },
+                                    {   'name': '0LEXPVIAB',
+                                        'value' : 16000
+                                    }
+                                ]
+                 },
+                 {  'name': 'ENS',
+                    'children' : [  {   'name': '0LEXART',
+                                        'value' : 2000
+                                    },
+                                    {   'name': '0LEXDOCUM',
+                                        'value' : 2200
+                                    },
+                                    {   'name': '0LEXPEDAG',
+                                        'value' : 7100
+                                    },
+                                    {   'name': '0LEXSORTI',
+                                        'value' : 4800
+                                    },
+                                    {   'name': '2 CEA XP',
+                                        'value' : 5000
+                                    },
+                                    {   'name': '13REPLEXP',
+                                        'value' : 220
+                                    }
+                                ]
+                }
+        ]
+}
+
+traduction = {
+                'ENS': 'Pédagogie',
+                'FONCT': 'Fonctionnement',
+                '0LEXART': 'Dépenses artistiques',
+                '0LEXDOCUM': 'Documentation',
+                '0LEXPEDAG': 'Dépenses pédagogiques',
+                '0LEXSORTI': 'Sorties et voyages',
+                '0LEXPASS': 'Assurances',
+                '0LEXPCARB': 'Carburant',
+                '0LEXPCONT': 'Contrats maintenance',
+                '0LEXPENT': 'Entretien/réparation',
+                '0LEXPEQ': 'Petit équipement',
+                '0LEXPFOUR': 'Fournitures',
+                '0LEXPHYG': 'Hygiène',
+                '0LEXPLOC': 'Locations',
+                '0LEXPPTT': "Poste & télécom'",
+                '0LEXPREC': 'Frais de réception',
+                '0LEXPVEHI': 'Entretien vehicule',
+                '0LEXPVIAB': 'Viabilisation',
+                '13REPLEXP': 'Reprographie',
+                '2 CEA XP' : 'CEA (Région)',
+                '040ALXP' : "Comm' externe",
+                'REPAS' : 'Repas',
+                '0LEXPMO' : 'Nourriture',
+                'TRAVAU' : 'Travaux',
+                '0LEXPTVX' : 'Travaux',
+                'FOURNITURES NON STOCKABLES - GAZ' : 'Gaz',
+                'FOURNITURES NON STOCKABLES - ELECTRICITE' : 'Electricité',
+                'FOURNITURES NON STOCKABLES - EAU' : 'Eau',
+                'AUTRES FOURNITURES (MAT. MOB. OUTIL. NON IMMOBILISABLES)' : 'Autres fournitures',
+                'FOURNITURES ADMINISTRATIVES' : 'Fournitures admin',
+                'FOURNITURES NON STOCKABLES - CARBURANTS ET LUBRIFIANTS' : 'Carburants et lubrifiants',
+                'BRICOLAND': 'Leroy Merlin',
+                'DISMER': 'Promocash',
+                'CASTORAMA OCEANIS': 'Castorama',
+                'CSF': 'Carrefour',
+                'SIDERIS OUEST': 'Sidéris',
+                'SOCULTUR': 'Cultura',
+                'ENGIE ENERGIE SERVICES': 'Engie',
+                'LES HAMEAUX BIO': 'Biocop',
+                'BOULANGER': 'Boulanger',
+                'LOCATIONS IMMOBILIERES': 'Loyer',
+                "OFFICE PUBLIC DE L'HABITAT SILENE": 'Silène',
+                'OFFICE DEPOT ST NAZAIRE': 'Office Dépot',
+                'PUBLICITE, PUBLICATIONS, RELATIONS PUBLIQUES': 'Pub',
+                'INFIRMERIE ET PRODUITS PHARMACEUTIQUES': 'Pharma',
+                "FOURNITURES ET PETIT MATERIEL D'ENTRETIEN": 'Fournitures entretien'            
+}
+
+def traduction_budget_previ(budget_previ):
+    # Mise à jour de la propriété name du nœud racine
+    budget_previ['name'] = traduction[budget_previ['name']] if budget_previ['name'] in traduction else budget_previ['name']
+    # Mise à jour récursive des propriétés name des nœuds enfants
+    if 'children' in budget_previ:
+        for child in budget_previ['children']:
+            traduction_budget_previ(child) if child['name'] in traduction else traduction_budget_previ(child)
+
 
 # Page d'accueil
 @app.route('/')
@@ -33,8 +155,13 @@ def create_node(name):
     }
 
 # Route générant les données nécessaires pour le sunburst
-@app.route('/sunburstdata')
+@app.route('/data')
 def get_sunburst_data():
+
+    if request.args.get("budget_previ"):
+        traduction_budget_previ(budget_previ)
+        return jsonify(budget_previ)
+
     # URL des fichiers Excel contenant les données
     excel_url = 'https://cloud.lycee-experimental.org/s/LMw46oacXzBgXLw/download/D%C3%A9penses.xlsx'
     excel_2022_url = 'https://cloud.lycee-experimental.org/s/aq4ZSABm2GS2eNL/download/D%C3%A9penses2022.xlsx'
@@ -58,39 +185,7 @@ def get_sunburst_data():
     # Création de la structure pour le sunburst
     structure = create_node('')
 
-    traduction = {
-            'ENS': 'Pédagogie',
-            'FONCT': 'Fonctionnement',
-            '0LEXART': 'Dépenses artistiques',
-            '0LEXDOCUM': 'Documentation',
-            '0LEXPEDAG': 'Dépenses pédagogiques',
-            '0LEXSORTI': 'Sorties et voyages',
-            '0LEXPASS': 'Assurances',
-            '0LEXPCARB': 'Carburant',
-            '0LEXPCONT': 'Contrats maintenance',
-            '0LEXPENT': 'Entretien/réparation',
-            '0LEXPEQ': 'Petit équipement',
-            '0LEXPFOUR': 'Fournitures',
-            '0LEXPHYG': 'Hygiène',
-            '0LEXPLOC': 'Locations',
-            '0LEXPPTT': "Poste & télécom'",
-            '0LEXPREC': 'Frais de réception',
-            '0LEXPVEHI': 'Entretien vehicule',
-            '0LEXPVIAB': 'Viabilisation',
-            '13REPLEXP': 'Reprographie',
-            '2 CEA XP' : 'CEA (Région)',
-            '040ALXP' : "Comm' externe",
-            'REPAS' : 'Repas',
-            '0LEXPMO' : 'Nourriture',
-            'TRAVAU' : 'Travaux',
-            '0LEXPTVX' : 'Travaux',
-            'FOURNITURES NON STOCKABLES - GAZ' : 'Gaz',
-            'FOURNITURES NON STOCKABLES - ELECTRICITE' : 'Electricité',
-            'FOURNITURES NON STOCKABLES - EAU' : 'Eau',
-            'AUTRES FOURNITURES (MAT. MOB. OUTIL. NON IMMOBILISABLES)' : 'Autres fournitures',
-            'FOURNITURES ADMINISTRATIVES' : 'Fournitures admin',
-            'FOURNITURES NON STOCKABLES - CARBURANTS ET LUBRIFIANTS' : 'Carburants et lubrifiants'
-        }
+    
     def fonct_traduction(cle):
         if cle in traduction:
             return traduction[cle]
@@ -130,7 +225,7 @@ def get_sunburst_data():
 
 
 # Route générant les données à partir d'un fichier Excel
-@app.route('/data')
+@app.route('/data2')
 def get_data():
     # URL du fichier Excel sur le web
     excel_url = 'https://cloud.lycee-experimental.org/s/Hy6fCi6D5CZAWgd/download/D%C3%A9penses.xlsx'
