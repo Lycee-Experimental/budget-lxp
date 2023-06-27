@@ -1,0 +1,10 @@
+@media screen and (max-width: 1279px) {
+    #chart {
+        font-size: large;
+    }
+    
+    div.card#informations{
+        position: relative;
+    }
+}
+    

@@ -12,7 +12,6 @@ html, body {
 
 div.card#informations{
     position: absolute;
-    transition: transform 1s;
 }
 
 #tooltip {
@@ -45,3 +44,5 @@ border: 1px solid #ddd;
 padding: 5px;
 visibility: hidden;
 }
+
+    
