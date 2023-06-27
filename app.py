@@ -106,8 +106,8 @@ traduction = {
                 'AUTRES FOURNITURES (MAT. MOB. OUTIL. NON IMMOBILISABLES)' : 'Autres fournitures',
                 'FOURNITURES ADMINISTRATIVES' : 'Fournitures admin',
                 'FOURNITURES NON STOCKABLES - CARBURANTS ET LUBRIFIANTS' : 'Carburants et lubrifiants',
-                'VOYAGES DEPL. MISSIONS ELEVES & ETUDIANTS - VOYAGES' : 'Voyages',
-                'VOYAGES DEPL. MISSIONS ELEVES & ETUDIANTS - SORTIES' : 'Sorties',
+                'VOYAGES DEPL. MISSIONS  ELEVES & ETUDIANTS - VOYAGES' : 'Voyages',
+                'VOYAGES DEPL. MISSIONS  ELEVES & ETUDIANTS - SORTIES' : 'Sorties',
                 'LIVRES PEDAG. & ADMIN. (NON DEMAT.) OUVRAGES CDI' : 'Livres',
                 "FOURNITURES ET MATERIELS D'ENSEIGNEMENT (NON IMMOBILISABLES)" : 'Fournitures',
                 'PERSONNELS EXTERIEURS A L’ETABLISSEMENT' : 'Intervenants',
@@ -132,7 +132,9 @@ traduction = {
                 'OFFICE DEPOT ST NAZAIRE': 'Office Dépot',
                 'PUBLICITE, PUBLICATIONS, RELATIONS PUBLIQUES': 'Pub',
                 'INFIRMERIE ET PRODUITS PHARMACEUTIQUES': 'Pharma',
-                "FOURNITURES ET PETIT MATERIEL D'ENTRETIEN": 'Fournitures entretien'            
+                'EMMAUS 44 - SAINT-NAZAIRE - FONDATEUR ABBE PIERRE': 'Emmaüs',
+                "FOURNITURES ET PETIT MATERIEL D'ENTRETIEN": 'Fournitures entretien',
+                "AUCHAN HYPERMARCHE": 'Auchan',           
 }
 
 def traduction_budget_previ(budget_previ):
