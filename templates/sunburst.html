@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="/static/css/sunburst-responsive.css">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 
 </head>
@@ -37,7 +39,7 @@
             const clientWidth = container.clientWidth;
             const clientHeight = container.clientHeight;
             const width = Math.min(clientWidth, clientHeight)
-            const radius = width / 6.5;
+            const radius = width / 6;
 
             // Configuration de l'arc pour le tracé des segments
             const arc = d3.arc()
