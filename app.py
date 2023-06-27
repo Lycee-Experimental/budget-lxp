@@ -131,6 +131,14 @@ def traduction_budget_previ(budget_previ):
         for child in budget_previ['children']:
             traduction_budget_previ(child) if child['name'] in traduction else traduction_budget_previ(child)
 
+def is_date_between(date, start_date, end_date):
+    date = pd.to_datetime(date, format="%d/%m/%Y")
+    start_date = pd.to_datetime(start_date, format="%d/%m/%Y") if start_date else None
+    end_date = pd.to_datetime(end_date, format="%d/%m/%Y") if end_date else None
+    # Vérification si la date est comprise entre les dates de début et de fin
+    return (not start_date or start_date <= date) and (not end_date or date <= end_date)
+
+
 
 # Page d'accueil
 @app.route('/')
@@ -157,10 +165,13 @@ def create_node(name):
 # Route générant les données nécessaires pour le sunburst
 @app.route('/data')
 def get_sunburst_data():
-
+    # Si la demande est d'afficher le budget prévisionnel
     if request.args.get("budget_previ"):
         traduction_budget_previ(budget_previ)
         return jsonify(budget_previ)
+    # Sinon, on récupère les éventuelles dates de débuts et de fin
+    debut=request.args.get("debut") if request.args.get("debut") else None
+    fin=request.args.get("fin") if request.args.get("fin") else None
 
     # URL des fichiers Excel contenant les données
     excel_url = 'https://cloud.lycee-experimental.org/s/LMw46oacXzBgXLw/download/D%C3%A9penses.xlsx'
@@ -194,14 +205,17 @@ def get_sunburst_data():
 
     # Parcours des lignes du DataFrame
     for _, row in merged_df.iterrows():
+        # Vérification si la date est comprise entre les dates de début et de fin
+        if not is_date_between(row['Date comptable facture'], debut, fin):
+            continue
         # Récupération des valeurs des colonnes
         domaine = fonct_traduction(row['Domaine'])
         activite = fonct_traduction(row['Activité'])
         libelle_compte = fonct_traduction(row['Libellé compte'].strip())
         fournisseur = fonct_traduction(row['Nom du fournisseur / élève'].strip())
-        libelle = fonct_traduction(row['Libellé 1'].strip())
-        date = fonct_traduction(row['Date comptable facture'])
-        value = fonct_traduction(row['Prix réceptionné TTC'])
+        libelle = row['Libellé 1'].strip()
+        date = row['Date comptable facture']
+        value = row['Prix réceptionné TTC']
     
         # Parcours des niveaux de la structure
         current_node = structure

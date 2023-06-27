@@ -305,11 +305,11 @@
 
         // Attente du chargement du document HTML
         document.addEventListener("DOMContentLoaded", function(event) {
-            // Vérification de la présence du paramètre budget_privi dans l'URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const budgetPrevi = urlParams.get('budget_previ');
-            const dataUrl = budgetPrevi ? '/data?budget_previ=1' : '/data';
-          
+        // Obtention des paramètres GET reçus par la page
+        const urlParams = new URLSearchParams(window.location.search);
+        const params = urlParams.toString();
+        // Renvoi des paramètres à la page /data
+        const dataUrl = `/data?${params}`;
             // Récupération des données JSON pour le diagramme
             d3.json(dataUrl).then(data => {
               // Appel de la fonction de création du diagramme avec les données
