@@ -16,11 +16,34 @@
         max-width: 100%;
         transition: .5s;
     }
+
+    div.card-content, th, td, p.title{
+        font-size: 15px;
+
+    }
+
+    .block:not(:last-child), .box:not(:last-child), .breadcrumb:not(:last-child), .content:not(:last-child), .level:not(:last-child), .message:not(:last-child), .notification:not(:last-child), .pagination:not(:last-child), .progress:not(:last-child), .subtitle:not(:last-child), .table-container:not(:last-child), .table:not(:last-child), .tabs:not(:last-child), .title:not(:last-child){
+        margin-bottom: 1px !important;
+
+    }
+
+    p.title-info{
+        visibility: hidden;
+    }
+
+    progress.progress{
+        height: 5px;
+        margin-bottom: 1px !important;
+    }
+
+    .card-content{
+        padding: 10px !important;
+    }
 }
 
 @media all and ( max-width: 600px) {
     #chart {
-        top: -150px !important;
+        top: -60px !important;
 
     }
 
