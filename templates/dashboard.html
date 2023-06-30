@@ -1,0 +1,58 @@
+{% block dashboard %}
+<div class="column is-one-fifth dash">
+      
+    <aside class="menu">
+      <img src="/static/images/logo.jpeg" alt="Logo" class="image is-128x128">
+      <p class="menu-label">
+        General
+      </p>
+      <ul class="menu-list">
+        <li><a href="/">Dashboard</a></li>
+      </ul>
+      <p class="menu-label">
+        Budget
+      </p>
+      <ul class="menu-list">
+        <li>
+          <a >Sunburst</a>
+          <ul>
+            <li><a href="/sunburst?debut=01/08/2022&fin=31/07/2023">Année passée</a></li>
+            <li><a href="/sunburst?debut=01/08/2023">Année en cours</a></li>
+            <li><a href="/sunburst?budget_previ=1">Prévisionnel</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="card" id="informations">
+        <div class="card-content">
+            <p class="title title-info">Informations</p>
+
+            <p class="subtitle" id="info"></p>
+
+        <div id="pourcentage"></div>
+
+            <p class="title">Total</p>
+        <div id="pourcentage_tot"></div>
+        </div>
+
+    </div>
+    </aside>
+  </div>
+
+  <script>
+    // Récupérer tous les éléments "a" dans le menu
+    const menuItems = document.querySelectorAll('.menu-list a');
+  
+    // Parcourir chaque élément "a" et vérifier si son href correspond à l'URL actuelle
+    menuItems.forEach(item => {
+      if (item.href === window.location.href) {
+        // Ajouter la classe "is-active" à l'élément correspondant à la page active
+        item.classList.add('is-active');
+      }
+    });
+
+    
+  </script>
+  
+{% endblock %}
+
+

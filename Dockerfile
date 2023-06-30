@@ -11,7 +11,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the Flask app code to the working directory
-COPY . .
+COPY . /app
 
 # Set the environment variables (if needed)
 ENV FLASK_APP=app.py
@@ -21,5 +21,5 @@ ENV FLASK_ENV=production
 EXPOSE 5000
 
 # Lancer l'app Flask avec Gunicorn sur le port 5000 et recharger lorsque l'on modifie le code
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:5000", "--reload"]
+CMD ["gunicorn", "app.py", "--bind", "0.0.0.0:5000", "--reload", "--pythonpath", "/app"]
 

@@ -5,44 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/static/css/styles.css">
   <link rel="stylesheet" href="/static/css/home.css">
-  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <title>Dashboard</title>
+  <style>
+    .card#informations{
+      visibility: hidden;
+    }
+  </style>
 </head>
 <body>
-  <section class="hero is-fullheight">
-    <div class="hero-body">
-      <div class="container has-text-centered">
-        <h1 class="title">Budget-LXP</h1>
-        <div class="buttons-container">
-          <a href="/camembert" class="button is-primary is-large animated-button">
-            Camembert
-          </a>
-          <a href="/sunburst?debut=01/08/2022&fin=31/07/2023" class="button is-warning is-large animated-button">
-            An passé 2022/2023
-          </a>
-          <a href="/sunburst?debut=01/08/2023" class="button is-success is-large animated-button">
-            Année en cours 2023/2024
-          </a>
-          <a href="/sunburst?budget_previ=1" class="button is-danger is-large animated-button">
-            Budget prévisionnel
-          </a>
-        </div>
-      </div>
+  <div class="columns">
+    {% include 'dashboard.html' %}
+    <div class="column">
+
+      <section class="hero">
+
+        <div class="hero-body">
+          <div class="card">
+            <div class="card-content">
+              <p class="title">Dashboard - BudgetXP, l'app capitaliste du LXP</h1>
+    
+              <p class="subtitle">Bienvenue sur le dashboard de "BudgetXP"
+              </br></br>Développé avec ♡ et 😠 par les codeureuses du LXP - 2023
+              </p>
+              
+            </div>
+          </div>
+          </div>
+
+      </section>
+
     </div>
-  </section>
+    
+  </div>
 
-  <script>
-    const buttons = document.querySelectorAll('.animated-button');
-    buttons.forEach(button => {
-      button.addEventListener('mouseover', () => {
-        button.classList.add('animated-button');
-      });
-
-      button.addEventListener('mouseout', () => {
-        button.classList.remove('animated-button');
-      });
-    });
-  </script>
 </body>
 </html>
 
