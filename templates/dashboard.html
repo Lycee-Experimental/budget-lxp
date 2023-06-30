@@ -1,7 +1,7 @@
 {% block dashboard %}
-<div class="column is-one-fifth dash">
-      
-    <aside class="menu">
+<div class="column is-one-quarter dash">
+
+    <aside class="menu" style="overflow-y: auto;">
       <img src="/static/images/logo.jpeg" alt="Logo" class="image is-128x128">
       <p class="menu-label">
         General
@@ -14,11 +14,22 @@
       </p>
       <ul class="menu-list">
         <li>
-          <a >Sunburst</a>
+          <a >Sunburst des dépenses de l'année</a>
           <ul>
-            <li><a href="/sunburst?debut=01/08/2022&fin=31/07/2023">Année passée</a></li>
             <li><a href="/sunburst?debut=01/08/2023">Année en cours</a></li>
+            <li><a href="/sunburst?debut=01/08/2022&fin=31/07/2023">Année passée</a></li>
             <li><a href="/sunburst?budget_previ=1">Prévisionnel</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <ul class="menu-list">
+        <li>
+          <a >Jauge des dépenses de l'année</a>
+          <ul>
+            <li><a href="/jauge?debut=01/08/2023">Année en cours</a></li>
+            <li><a href="/jauge?debut=01/08/2022&fin=31/07/2023">Année passée</a></li>
+            <li><a href="/jauge?budget_previ=1">Prévisionnel</a></li>
           </ul>
         </li>
       </ul>
@@ -41,7 +52,7 @@
   <script>
     // Récupérer tous les éléments "a" dans le menu
     const menuItems = document.querySelectorAll('.menu-list a');
-  
+
     // Parcourir chaque élément "a" et vérifier si son href correspond à l'URL actuelle
     menuItems.forEach(item => {
       if (item.href === window.location.href) {
@@ -50,9 +61,7 @@
       }
     });
 
-    
+
   </script>
-  
+
 {% endblock %}
-
-
