@@ -9,7 +9,10 @@ fetch(dataPrevi)
 // Définition de la fonction de création du diagramme Stackbars
 const chart = rowdata => {
 // On récupère les data pour en faire 
-const data = d3.hierarchy(rowdata).sum(d => d.value)
+const data = d3.hierarchy(rowdata)
+            .sum(d => d.value)
+            .sort((a, b) => b.value - a.value);
+
 // Set up the chart dimensions and margins
 const margin = { top: 20, right: 10, bottom: 30, left: 350 };
 const container = document.getElementById('chart');
