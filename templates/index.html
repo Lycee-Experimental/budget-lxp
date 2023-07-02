@@ -1,45 +1,15 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <link rel="stylesheet" href="/static/css/home.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>Dashboard</title>
-  <style>
-    .card#informations{
-      visibility: hidden;
-    }
-  </style>
-</head>
-<body>
-  <div class="columns">
-    {% include 'dashboard.html' %}
-    <div class="column">
-
-      <section class="hero">
-
-        <div class="hero-body">
-          <div class="card">
-            <div class="card-content">
-              <p class="title">Dashboard - BudgetXP, l'app capitaliste du LXP</h1>
-    
-              <p class="subtitle">Bienvenue sur le dashboard de "BudgetXP"
-              </br></br>Développé avec ♡ et 😠 par les codeureuses du LXP - 2023
-              </p>
-              
-            </div>
-          </div>
-          </div>
-
-      </section>
-
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+  <div class="hero-body">
+    <div class="card">
+      <div class="card-content">
+        <p class="title">Dashboard - BudgetXP, l'app capitaliste du LXP</h1>
+        <p class="subtitle">Bienvenue sur le dashboard de "BudgetXP"
+        </br></br>Développé avec ♡ et 😠 par les codeureuses du LXP - 2023
+        </p>
+      </div>
     </div>
-    
-  </div>
-
-</body>
-</html>
-
+    </div>
+</section>
+{%endblock%}
