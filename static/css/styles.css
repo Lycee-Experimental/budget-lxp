@@ -1,2 +1,15 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
+.navbar-item img {
+    max-height: 3.75rem !important;
+}
+
+.navbar {
+    min-height: 3.75rem !important;
+}
+
+.navbar-burger {
+
+    height: 4.25rem;
+    width: 4.25rem;
+}
