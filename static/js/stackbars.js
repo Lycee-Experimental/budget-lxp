@@ -21,16 +21,16 @@ const chart = rowdata => {
         .sort((a, b) => b.value - a.value);
 
     // Set up the chart dimensions and margins
-    const margin = { top: 0, right: 10, bottom: 30, left: 120 };
+    const margin = { top: 0, right: 10, bottom: 30, left: 10 };
     const container = document.getElementById('chart');
     const width = container.clientWidth - margin.left - margin.right;
-    const height = container.clientHeight - margin.top - margin.bottom;
+    const height = container.clientHeight - margin.top - margin.bottom - 30;
     // Create an SVG element and append it to the chart container
     console.log(width, height);
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height])
-        .attr("width", "100%")
-        .attr("height", "100%");
+        .attr("width", width)
+        .attr("height", height);
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
     // Set up the scales
@@ -38,7 +38,7 @@ const chart = rowdata => {
     // Set the domains for the scales
     yScale.domain(data.children.map((d) => d.data.name));
     // Add the background bars
-    svg
+    g
         .selectAll(".background-bar")
         .data(data.children)
         .enter()
@@ -49,7 +49,7 @@ const chart = rowdata => {
         .attr("width", width)
         .attr("height", yScale.bandwidth());
     // Add the bars
-    const bars = svg
+    const bars = g
         .selectAll(".bar")
         .data(data.children)
         .enter()
@@ -105,7 +105,7 @@ const chart = rowdata => {
         });
 
     // Ajout des étiquettes des catégories
-    svg
+    g
         .selectAll(".category-label")
         .data(data.children)
         .enter()
