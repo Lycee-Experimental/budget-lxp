@@ -189,6 +189,10 @@ const chart = data => {
         .then(response => response.json())
         .then(data => {
             budgetPrevi = d3.hierarchy(data).sum(d => d.value);
+
+                // Appelle la fonction "pourcentage" pour chaque objet enfant
+
+    pourcentage_total(root);
         });
 
     // Pourcentage du budget dépensé 
@@ -231,7 +235,13 @@ const chart = data => {
 
     // Pourcentage du budget dépensé total
     function pourcentage_total(d) {
-        const budget = totalValue;
+        const nameToFind = d.data.name;
+        const node = budgetPrevi.descendants().find(d => d.data.name === nameToFind);
+        if (node) {
+          budget = node.value;
+          nom_domaine = nameToFind;
+
+        } 
         const pourcentage_budget = d.value * 100 / budget;
 
         var pourcentage_tot = d3.select('#pourcentage_tot');
