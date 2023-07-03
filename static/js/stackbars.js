@@ -6,6 +6,13 @@ fetch(dataPrevi)
     .then(data => {
         data_max = d3.hierarchy(data).sum(d => d.value);
     });
+// Fonction de calcul du pourcentage du budget prévisionnel
+function getPourcentage(d) {
+    const nameToFind = d.data.name;
+    const previ = data_max.descendants().find(d => d.data.name === nameToFind).value;
+    const pourcentage = d.value * 100 / previ;
+  return [pourcentage.toFixed(2), previ];
+};
 // Définition de la fonction de création du diagramme Stackbars
 const chart = rowdata => {
 // On récupère les data pour en faire 
@@ -53,9 +60,8 @@ bars
     .selectAll("rect")
     .data((d) => {
         let xPos = 0;
-        const maxValueNode = data_max.descendants().find((node) => node.data.name === d.data.name);
-        const maxValue = maxValueNode ? maxValueNode.value : 100000;
-        console.log(maxValue, d.data.name);
+        //const maxValueNode = data_max.descendants().find((node) => node.data.name === d.data.name);
+        const maxValue = getPourcentage(d)[1];
         return d.children.map((child) => {
             const rectData = {
                 ...child,
@@ -99,10 +105,7 @@ bars
         d3.select("body").on("mousemove", null);
     });
     
-// Add labels for the categories
-
-const pourcentage_budget = data.value * 100 / data_max.value;
-
+// Ajout des étiquettes des catégories
 svg
     .selectAll(".category-label")
     .data(data.children)
@@ -113,7 +116,7 @@ svg
     .attr("y", (d) => yScale(d.data.name) + yScale.bandwidth() / 2)
     .attr("dy", "-90")
     .attr("text-anchor", "beggin")
-    .text((d) => d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + " (" + pourcentage_budget.toFixed(2) + "%)");
+    .text((d) => d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + " (" + getPourcentage(d)[0] +"% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" })+ ")");
     return svg.node();
 };
 // Function to assign a color to each subcategory
