@@ -112,8 +112,8 @@ const chart = rowdata => {
         .append("text")
         .attr("class", "category-label")
         .attr("x", 0)
-        .attr("y", (d) => yScale(d.data.name) + yScale.bandwidth() / 2)
-        .attr("dy", "-90")
+        .attr("y", (d) => yScale(d.data.name) - yScale.bandwidth() / 6)
+        .attr("dy", "0.35em")
         .attr("text-anchor", "beggin")
         .text((d) => d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + " (" + getPourcentage(d)[0] + "% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + ")");
     return svg.node();
