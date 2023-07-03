@@ -14,7 +14,7 @@ const data = d3.hierarchy(rowdata)
             .sort((a, b) => b.value - a.value);
 
 // Set up the chart dimensions and margins
-const margin = { top: 20, right: 10, bottom: 30, left: 350 };
+const margin = { top: 20, right: 10, bottom: 30, left: 120 };
 const container = document.getElementById('chart');
 const width = container.clientWidth - margin.left - margin.right;
 const height = container.clientHeight - margin.top - margin.bottom;
@@ -74,19 +74,31 @@ bars
     .attr("height", yScale.bandwidth())
     .attr("fill", (d) => getColor(d))
     .on("mouseover", function (event, d) {
-        // Show tooltip
+        // Crée la tooltip
         const tooltip = d3
             .select("body")
             .append("div")
             .attr("class", "tooltip")
             .style("left", event.pageX + "px")
             .style("top", event.pageY + "px")
-            .text(d.data.name);
+            .html(d.data.name); // Utilise .html() au lieu de .text() pour permettre le contenu HTML
+    
+        // Met à jour la position de la tooltip lorsque la souris se déplace
+        d3.select("body")
+            .on("mousemove", function (event) {
+                tooltip
+                    .style("left", event.pageX + "px")
+                    .style("top", event.pageY + "px");
+            });
     })
     .on("mouseout", function () {
-        // Remove tooltip
+        // Supprime la tooltip
         d3.select(".tooltip").remove();
+    
+        // Supprime l'événement de suivi de la souris
+        d3.select("body").on("mousemove", null);
     });
+    
 // Add labels for the categories
 svg
     .selectAll(".category-label")
@@ -94,10 +106,10 @@ svg
     .enter()
     .append("text")
     .attr("class", "category-label")
-    .attr("x", -10)
+    .attr("x", 0)
     .attr("y", (d) => yScale(d.data.name) + yScale.bandwidth() / 2)
-    .attr("dy", "0.35em")
-    .attr("text-anchor", "end")
+    .attr("dy", "-90")
+    .attr("text-anchor", "beggin")
     .text((d) => d.data.name);
 return svg.node();
 };
