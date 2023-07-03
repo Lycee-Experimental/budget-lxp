@@ -11,7 +11,7 @@ div.content_et_infos {
 div.card#informations{
     transition: .5s;
     position: absolute;
-    max-width: 20%;
+    max-width: 22%;
 }
 
 .progress{
