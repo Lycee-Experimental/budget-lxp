@@ -21,7 +21,7 @@ const chart = rowdata => {
         .sort((a, b) => b.value - a.value);
 
     // Set up the chart dimensions and margins
-    const margin = { top: 20, right: 10, bottom: 30, left: 120 };
+    const margin = { top: 0, right: 10, bottom: 30, left: 120 };
     const container = document.getElementById('chart');
     const width = container.clientWidth - margin.left - margin.right;
     const height = container.clientHeight - margin.top - margin.bottom;
