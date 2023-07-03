@@ -81,7 +81,7 @@ bars
             .attr("class", "tooltip")
             .style("left", event.pageX + "px")
             .style("top", event.pageY + "px")
-            .html(d.data.name); // Utilise .html() au lieu de .text() pour permettre le contenu HTML
+            .html(d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })); // Utilise .html() au lieu de .text() pour permettre le contenu HTML
     
         // Met à jour la position de la tooltip lorsque la souris se déplace
         d3.select("body")
@@ -100,6 +100,9 @@ bars
     });
     
 // Add labels for the categories
+
+const pourcentage_budget = data.value * 100 / data_max.value;
+
 svg
     .selectAll(".category-label")
     .data(data.children)
@@ -110,8 +113,8 @@ svg
     .attr("y", (d) => yScale(d.data.name) + yScale.bandwidth() / 2)
     .attr("dy", "-90")
     .attr("text-anchor", "beggin")
-    .text((d) => d.data.name);
-return svg.node();
+    .text((d) => d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + " (" + pourcentage_budget.toFixed(2) + "%)");
+    return svg.node();
 };
 // Function to assign a color to each subcategory
 let parent;
