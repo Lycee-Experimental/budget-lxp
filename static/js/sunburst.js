@@ -201,6 +201,7 @@ const chart = data => {
     function pourcentage(d) {
         const nameToFind = d.data.name;
         const node = budgetPrevi.descendants().find(d => d.data.name === nameToFind);
+        const travaux = budgetPrevi.descendants().find(d => d.data.name === "Travaux");
         if (node) {
           budget = node.value;
           nom_domaine = nameToFind;
@@ -229,7 +230,7 @@ const chart = data => {
         }
 
         pourcentage.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-    <center>${pourcentage_budget.toFixed(1)} % (${format(d.value)} €) de ${format(budget)} € de ${nom_domaine} </center>`);
+    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> (${format(d.value)} €) de ${format(budget)} € de <strong>${nom_domaine || "Global avec Travaux"}</strong> </center>`);
 
     }
 
@@ -237,8 +238,9 @@ const chart = data => {
     function pourcentage_total(d) {
         const nameToFind = d.data.name;
         const node = budgetPrevi.descendants().find(d => d.data.name === nameToFind);
+        const travaux = budgetPrevi.descendants().find(d => d.data.name === "Travaux");
         if (node) {
-          budget = node.value;
+          budget = node.value - travaux.value;
           nom_domaine = nameToFind;
 
         } 
@@ -265,7 +267,7 @@ const chart = data => {
         }
 
         pourcentage_tot.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-                <center>${pourcentage_budget.toFixed(1)} % (${format(d.value)} €) de ${format(budget)} €</center>`);
+                <center><strong>${pourcentage_budget.toFixed(1)} %</strong> (${format(d.value)} €) de ${format(budget)} € de <strong>Global</strong></center>`);
     }
 
     // Fonction pour déterminer la visibilité d'un segment
