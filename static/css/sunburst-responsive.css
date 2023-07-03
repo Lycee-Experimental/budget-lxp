@@ -41,16 +41,5 @@
     }
 }
 
-@media all and ( max-width: 600px) {
-    #chart {
-        top: -60px !important;
 
-    }
-
-    svg {
-        height: 150% !important;
-        size: 700px;
-    }
-
-}
 
