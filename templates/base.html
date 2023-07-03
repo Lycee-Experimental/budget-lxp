@@ -9,13 +9,12 @@
     {% endblock   %}
   </head>
   <body>
+    {% include 'navbar.html' %}
+
     <div class="columns">
-      <div class="column is-one-quarter dash">
-          <aside class="menu" style="overflow-y: auto;"">
-              {% include 'aside.html' %}
+      <div class="column is-one-quarter">
               {% block info %}
               {% endblock %}
-          </aside>
       </div>
       <div class="column">
         {%block content%}
