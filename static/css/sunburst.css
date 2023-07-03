@@ -4,12 +4,14 @@
     transition: .5s;
 }
 
-div.columns {
+div.content_et_infos {
     height: 100vh;
 }
 
 div.card#informations{
-    transition: .5s
+    transition: .5s;
+    position: absolute;
+    max-width: 20%;
 }
 
 .progress{

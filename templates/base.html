@@ -11,16 +11,14 @@
   <body>
     {% include 'navbar.html' %}
 
-    <div class="columns">
-      <div class="column is-one-quarter">
+    <div class="content_et_infos">
               {% block info %}
               {% endblock %}
-      </div>
-      <div class="column">
+      
         {%block content%}
         {%endblock%}
       </div>
-    </div>
+      
     {% block extrajs %}
     {% endblock %}
   </body>
