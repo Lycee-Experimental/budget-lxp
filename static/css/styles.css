@@ -1,13 +1,2 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
-aside.menu {
-    background-color: rgb(235, 244, 248);
-    height: 100%;
-    padding: 10px;
-}
-
-div.dash{
-    background-color: rgb(235, 244, 248);
-    height: 100vh;
-}
-
