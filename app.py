@@ -17,12 +17,17 @@ def index():
     return render_template('index.html', title='Accueil')
 
 # Page affichant un camembert
-@app.route('/camembert')
+@app.route('/budget/camembert')
 def camembert():
     return render_template('camembert.html')
 
+# Page affichant un camembert avec les pronoms des élèves
+@app.route('/eleves/pronoms')
+def camembert_pronoms():
+    return render_template('camembert_pronoms.html')
+
 # Page affichant un sunburst
-@app.route('/sunburst')
+@app.route('/budget/sunburst')
 def sunburst():    
     if request.args.get("budget_previ"):
         title='Budget prévisionnel'
@@ -30,7 +35,7 @@ def sunburst():
         title='Budget'
     return render_template('sunburst.html', title=title)
 
-@app.route('/stackbar')
+@app.route('/budget/stackbar')
 def stackbar():    
     return render_template('stackbars.html', title='Jauge des dépenses')
 
