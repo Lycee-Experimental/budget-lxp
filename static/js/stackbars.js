@@ -129,6 +129,7 @@ const chart = rowdata => {
                       }
               
                       result.push(childData);
+                      result.push(...grandchildren); // Ajout des enfants en bout de hiérarchie
                     });
                   }
               
@@ -147,12 +148,7 @@ const chart = rowdata => {
                 // Ajouter les lignes de données du tableau
                 expensesTable += "<tbody>";
                 recursiveChildren.forEach(child => {
-                  expensesTable += `<tr><td>${child.name}</td><td>${child.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })} euros</td></tr>`;
-                  if (child.children) {
-                    child.children.forEach(grandchild => {
-                      expensesTable += `<tr><td>${grandchild.name}</td><td>${grandchild.value} euros</td></tr>`;
-                    });
-                  }
+                  expensesTable += `<tr><td>${child.name}</td><td>${child.value} euros</td></tr>`;
                 });
                 expensesTable += "</tbody>";
               
@@ -160,7 +156,7 @@ const chart = rowdata => {
               
                 // Afficher le tableau des choses dépensées et le nom dans le div "content-modal"
                 document.getElementById("bg-modal").style.display = "block";
-                document.getElementById("content-modal").innerHTML = `<p class="title">Historique des dépenses pour ${barData.data.name} :</br>${expensesTable}</p>`;
+                document.getElementById("content-modal").innerHTML = `<p class="title">Historique des dépenses</p></br><p class="subtitle">${barData.data.name}</p> </br>${expensesTable}`;
               
                 // Utiliser DataTables pour rendre le tableau dynamique
                 $(document).ready(function() {
