@@ -156,11 +156,15 @@ const chart = rowdata => {
               
                 // Afficher le tableau des choses dépensées et le nom dans le div "content-modal"
                 document.getElementById("bg-modal").style.display = "block";
-                document.getElementById("content-modal").innerHTML = `<p class="title">Historique des dépenses</p></br><p class="subtitle">${barData.data.name}</p> </br>${expensesTable}`;
+                document.getElementById("content-modal").innerHTML = `<p class="title">Historique des dépenses</p></br><p class="subtitle">${barData.data.name}</p> </br>${expensesTable}`; 
               
-                // Utiliser DataTables pour rendre le tableau dynamique
+                // Utiliser DataTables pour rendre le tableau dynamique avec défilement vertical
                 $(document).ready(function() {
-                  $('#expenses-table').DataTable();
+                  $('#expenses-table').DataTable({
+                    scrollY: '300px', // Hauteur de défilement
+                    scrollCollapse: true,
+                    paging: false
+                  });
                 });
               
                 // Changer la couleur du div en fonction de la couleur de la barre cliquée
@@ -172,7 +176,7 @@ const chart = rowdata => {
               
               
               
-              
+        
               
               
                 
