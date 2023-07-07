@@ -2,10 +2,17 @@
 
 {% block head %}
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
     <link rel="stylesheet" href="/static/css/stackbars.css">
 {% endblock %}
 
 {% block content %}
+<div id="bg-modal">
+    <div id="modal-close"><p>fermer le modal</p></div>
+    <div id="modal">
+        <div id="content-modal"></div>
+    </div>
+</div>
 <div id="chart"></div>
 {% endblock %}
     

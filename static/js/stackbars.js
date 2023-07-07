@@ -102,7 +102,48 @@ const chart = rowdata => {
 
             // Supprime l'événement de suivi de la souris
             d3.select("body").on("mousemove", null);
-        });
+        })
+        .on("click", function(event) {
+            // Récupérer l'élément sur lequel vous avez cliqué
+            var clickedElement = event.target;
+          
+            // Vérifier si l'élément cliqué est une barre du stackbar
+            if (clickedElement.tagName === "rect" && clickedElement.parentNode.classList.contains("bar")) {
+                // Récupérer les données associées à la barre cliquée
+                var barData = clickedElement.__data__;
+              
+                // Récupérer l'historique des dépenses de la barre cliquée
+                var expensesHistory = barData.children.map(child => {
+                  return {
+                    name: child.data.name,
+                    value: child.value
+                  };
+                });
+              
+                // Construire une chaîne de caractères pour afficher l'historique des dépenses
+                var expensesHistoryString = "";
+                expensesHistory.forEach(expense => {
+                  expensesHistoryString += `${expense.name} : ${expense.value}</br>`;
+                });
+              
+                // Afficher l'historique des dépenses et le nom dans le div "content-modal"
+                document.getElementById("bg-modal").style.display = "block";
+                document.getElementById("content-modal").innerHTML = `Historique des dépenses pour ${barData.data.name} :</br>${expensesHistoryString}`;
+              
+                // Changer la couleur du div en fonction de la couleur de la barre cliquée
+              
+                document.getElementById("modal-close").addEventListener("click", function() {
+                  // Rendre le div "bg-modal" invisible
+                  document.getElementById("bg-modal").style.display = "none";
+                });
+              }
+              
+              
+              
+          });
+          
+          
+          
 
     // Ajout des étiquettes des catégories
     g
