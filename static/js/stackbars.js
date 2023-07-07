@@ -106,32 +106,68 @@ const chart = rowdata => {
         .on("click", function(event) {
             // Récupérer l'élément sur lequel vous avez cliqué
             var clickedElement = event.target;
-          
-            // Vérifier si l'élément cliqué est une barre du stackbar
+
             if (clickedElement.tagName === "rect" && clickedElement.parentNode.classList.contains("bar")) {
                 // Récupérer les données associées à la barre cliquée
                 var barData = clickedElement.__data__;
               
-                // Récupérer l'historique des dépenses de la barre cliquée
-                var expensesHistory = barData.children.map(child => {
-                  return {
-                    name: child.data.name,
-                    value: child.value
-                  };
-                });
+                // Fonction récursive pour parcourir les enfants récursivement
+                function getRecursiveChildren(data, level) {
+                  var children = data.children;
+                  var result = [];
               
-                // Construire une chaîne de caractères pour afficher l'historique des dépenses
-                var expensesHistoryString = "";
-                expensesHistory.forEach(expense => {
-                  expensesHistoryString += `${expense.name} : ${expense.value}</br>`;
-                });
+                  if (children) {
+                    children.forEach(child => {
+                      var childData = {
+                        name: child.data.name,
+                        value: child.value
+                      };
               
-                // Afficher l'historique des dépenses et le nom dans le div "content-modal"
+                      var grandchildren = getRecursiveChildren(child, level + 1);
+                      if (grandchildren.length > 0) {
+                        childData.children = grandchildren;
+                      }
+              
+                      result.push(childData);
+                    });
+                  }
+              
+                  return result;
+                }
+              
+                // Récupérer les enfants récursifs de la barre cliquée
+                var recursiveChildren = getRecursiveChildren(barData, 0);
+              
+                // Construire un tableau HTML pour afficher la liste des choses dépensées
+                var expensesTable = "<table id='expenses-table' class='table is-striped is-bordered is-hoverable'>";
+              
+                // Ajouter l'en-tête du tableau
+                expensesTable += "<thead><tr><th>Nom</th><th>Valeur</th></tr></thead>";
+              
+                // Ajouter les lignes de données du tableau
+                expensesTable += "<tbody>";
+                recursiveChildren.forEach(child => {
+                  expensesTable += `<tr><td>${child.name}</td><td>${child.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })} euros</td></tr>`;
+                  if (child.children) {
+                    child.children.forEach(grandchild => {
+                      expensesTable += `<tr><td>${grandchild.name}</td><td>${grandchild.value} euros</td></tr>`;
+                    });
+                  }
+                });
+                expensesTable += "</tbody>";
+              
+                expensesTable += "</table>";
+              
+                // Afficher le tableau des choses dépensées et le nom dans le div "content-modal"
                 document.getElementById("bg-modal").style.display = "block";
-                document.getElementById("content-modal").innerHTML = `Historique des dépenses pour ${barData.data.name} :</br>${expensesHistoryString}`;
+                document.getElementById("content-modal").innerHTML = `<p class="title">Historique des dépenses pour ${barData.data.name} :</br>${expensesTable}</p>`;
+              
+                // Utiliser DataTables pour rendre le tableau dynamique
+                $(document).ready(function() {
+                  $('#expenses-table').DataTable();
+                });
               
                 // Changer la couleur du div en fonction de la couleur de la barre cliquée
-              
                 document.getElementById("modal-close").addEventListener("click", function() {
                   // Rendre le div "bg-modal" invisible
                   document.getElementById("bg-modal").style.display = "none";
@@ -140,6 +176,10 @@ const chart = rowdata => {
               
               
               
+              
+              
+              
+                
           });
           
           
