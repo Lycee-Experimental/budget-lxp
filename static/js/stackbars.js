@@ -120,7 +120,8 @@ const chart = rowdata => {
                     children.forEach(child => {
                       var childData = {
                         name: child.data.name,
-                        value: child.value
+                        value: child.value,
+                        date : child.data.date
                       };
               
                       var grandchildren = getRecursiveChildren(child, level + 1);
@@ -139,16 +140,20 @@ const chart = rowdata => {
                 // Récupérer les enfants récursifs de la barre cliquée
                 var recursiveChildren = getRecursiveChildren(barData, 0);
               
+                // Trier les données par date (supposons que chaque objet a une propriété "date")
+                recursiveChildren.sort((a, b) => new Date(a.date) - new Date(b.date));
+              
                 // Construire un tableau HTML pour afficher la liste des choses dépensées
                 var expensesTable = "<table id='expenses-table' class='table is-striped is-bordered is-hoverable'>";
               
                 // Ajouter l'en-tête du tableau
-                expensesTable += "<thead><tr><th>Nom</th><th>Valeur</th></tr></thead>";
+                expensesTable += "<thead><tr><th>Nom</th><th>Valeur</th><th>Date</th></tr></thead>";
+
               
                 // Ajouter les lignes de données du tableau
                 expensesTable += "<tbody>";
                 recursiveChildren.forEach(child => {
-                  expensesTable += `<tr><td>${child.name}</td><td>${child.value} euros</td></tr>`;
+                  expensesTable += `<tr><td>${child.name}</td><td>${child.value} euros</td><td>${child.date}</td></tr>`;
                 });
                 expensesTable += "</tbody>";
               
@@ -158,12 +163,14 @@ const chart = rowdata => {
                 document.getElementById("bg-modal").style.display = "block";
                 document.getElementById("content-modal").innerHTML = `<p class="title">Historique des dépenses</p></br><p class="subtitle">${barData.data.name}</p> </br>${expensesTable}`; 
               
-                // Utiliser DataTables pour rendre le tableau dynamique avec défilement vertical
+              
+                // Utiliser DataTables pour rendre le tableau dynamique avec défilement vertical et tri par date
                 $(document).ready(function() {
                   $('#expenses-table').DataTable({
                     scrollY: '300px', // Hauteur de défilement
                     scrollCollapse: true,
-                    paging: false
+                    paging: false,
+                    order: [[1, "asc"]] // Tri par colonne 1 (valeur) en ordre croissant
                   });
                 });
               
@@ -173,12 +180,6 @@ const chart = rowdata => {
                   document.getElementById("bg-modal").style.display = "none";
                 });
               }
-              
-              
-              
-        
-              
-              
                 
           });
           
