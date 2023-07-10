@@ -102,7 +102,70 @@ const chart = rowdata => {
 
             // Supprime l'événement de suivi de la souris
             d3.select("body").on("mousemove", null);
-        });
+        })
+        .on("click", function(event, d) {
+            const container = d3.select("#table-container");
+            // On vide le tableau précédent s'il existe
+            container.html('');
+            // On ajoute une table
+            const table = container.append("table")
+                .attr("id", "tableau-des-depenses")
+                .attr("class", "table is-striped is-bordered is-hoverable is-fullwidth");
+            // On ajoute un tbody à la table
+            const tbody = table.append("tbody");
+            // On crée les données de la table à partir de d
+            const tableData = d3.hierarchy(d).leaves().map(node => {
+              const ancestors = node.ancestors();
+              return {
+                'Date': node.data.data.date,
+                'Libellé': node.data.data.name,
+                'Montant': node.data.value,
+                'Fournisseur': ancestors[1].data.data.name,
+                'Compte': ancestors[2].data.data.name,
+                'Activité': ancestors[3].data.data.name
+              };
+            });
+            // On crée les lignes (tr) à partir des données
+            const rows = tbody.selectAll("tr")
+              .data(tableData)
+              .enter()
+              .append("tr");
+            // On ajoute les colonnes
+            rows.selectAll("td")
+              .data(row => Object.values(row))
+              .enter()
+              .append("td")
+              .text(d => d);
+            // On ajoute les entêtes
+            const headers = table.append("thead").append("tr");
+            const columnHeaders = Array.from(new Set(tableData.flatMap(Object.keys)));
+            headers.selectAll("th")
+              .data(columnHeaders)
+              .enter()
+              .append("th")
+              .text(d => d);
+            // On affiche le modal
+             $("#modal").addClass("is-active");
+            // Utiliser DataTables pour rendre le tableau dynamique avec défilement vertical et tri par date
+            $(document).ready(function() {
+                if (!$.fn.DataTable.isDataTable('#tableau-des-depenses')) {
+                    // Pour trier les dates par ordres chronologiques
+                    $.fn.dataTable.moment( 'DD/MM/YYYY');
+                    // Initialisation du tableau avec DataTable
+                    $('#tableau-des-depenses').DataTable({
+                        //scrollY: '80vh',
+                        //scrollCollapse: true,
+                        paging: false,
+                        order: [[0, "dsc"]],
+                        language: {
+                                url: '//cdn.datatables.net/plug-ins/1.13.5/i18n/fr-FR.json',
+                            },
+                        });
+                };    
+            });
+          });
+          
+        
 
     // Ajout des étiquettes des catégories
     g
@@ -145,3 +208,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         chartContainer.appendChild(chart(data));
     });
 });
+document.querySelectorAll('.modal-background, .delete').forEach((element) => {
+    element.addEventListener('click', () => {
+      document.getElementById('modal').classList.remove('is-active');
+        });
+  });
+

@@ -22,3 +22,7 @@
     height: 100%;
     transition: .5s;
 }
+
+.modal-card, .modal-content {
+  width: 95%;
+}
