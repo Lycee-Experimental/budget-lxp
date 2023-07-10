@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<!-- Load d3.js & color scale -->
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>{% endblock %}
+
+{% block content %}
+
+<!-- Create a div where the graph will take place -->
+<center><div id="my_dataviz"></div></center>
+
+{% endblock %}
+    
+{% block extrajs %}
+<script src="/static/js/camembert_pronoms.js"></script>
+{% endblock %}
