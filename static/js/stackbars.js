@@ -119,7 +119,7 @@ const chart = rowdata => {
               return {
                 'Date': node.data.data.date,
                 'Libellé': node.data.data.name,
-                'Montant': node.data.value,
+                'Montant': node.data.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }),
                 'Fournisseur': ancestors[1].data.data.name,
                 'Compte': ancestors[2].data.data.name,
                 'Activité': ancestors[3].data.data.name
