@@ -14,7 +14,7 @@
   }
 
   div.content_et_infos {
-    height: 100vh;
+    height: 80vh;
     width: 100hh;
 }
   #chart {
@@ -26,3 +26,5 @@
 .modal-card, .modal-content {
   width: 95%;
 }
+
+.title, .subtitle {text-align: center;} 
