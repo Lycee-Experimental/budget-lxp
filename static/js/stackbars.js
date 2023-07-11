@@ -86,14 +86,14 @@ const chart = rowdata => {
                 .attr("class", "tooltip")
                 .style("left", event.pageX + "px")
                 .style("top", event.pageY + "px")
-                .html(d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + '<br>' + getPourcentage(d)[0] + "% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" }));
+                .html("<strong>"+d.data.name + " : </strong>" + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + '<br>(' + getPourcentage(d)[0] + "% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" })+")");
 
             // Met à jour la position de la tooltip lorsque la souris se déplace
             d3.select("body")
                 .on("mousemove", function (event) {
                     tooltip
-                        .style("left", event.pageX + "px")
-                        .style("top", event.pageY + "px");
+                        .style("left", (event.pageX+10) + "px")
+                        .style("top", (event.pageY-10) + "px");
                 });
         })
         .on("mouseout", function () {
@@ -168,8 +168,7 @@ const chart = rowdata => {
         
 
     // Ajout des étiquettes des catégories
-    g
-        .selectAll(".category-label")
+    g.selectAll(".category-label")
         .data(data.children)
         .enter()
         .append("text")
@@ -178,7 +177,7 @@ const chart = rowdata => {
         .attr("y", (d) => yScale(d.data.name) - yScale.bandwidth() / 6)
         .attr("dy", "0.35em")
         .attr("text-anchor", "beggin")
-        .text((d) => d.data.name + " : " + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + " (" + getPourcentage(d)[0] + "% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + ")");
+        .html((d) => "<tspan font-weight='bold'>" + d.data.name + " : </tspan>" + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + " (" + getPourcentage(d)[0] + "% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + ")");    
     return svg.node();
 };
 // Function to assign a color to each subcategory
