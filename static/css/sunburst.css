@@ -12,6 +12,7 @@ div.card#informations{
     transition: .5s;
     position: absolute;
     max-width: 22%;
+    visibility: hidden;
 }
 
 .progress{

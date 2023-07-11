@@ -1,5 +1,5 @@
 // Définition de la fonction de création du diagramme Sunburst
-const chart = data => {
+const chart = (data, previ) => {
     const container = document.getElementById('chart');
     const clientWidth = container.clientWidth;
     const clientHeight = container.clientHeight;
@@ -160,27 +160,32 @@ const chart = data => {
             .attrTween("transform", d => () => labelTransform(d.current));
 
         //Mise à jour des informations de navigation
-        showInfo(p);
+        if (!previ) {showInfo(root)};
         pourcentage(p);
     }
 
     //Affichage des informations de navigation
     function showInfo(data) {
-        var info = d3.select("#info");
-
+        // On affiche l'info
+        var card = d3.select("#informations");
+        card.style("visibility", "visible");
+        // On traite les données
         const ancestors = data.ancestors().map(data => data.data.name).reverse();
         const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
+        // On les met en forme de tableau
         let html = '';
         for (let i = 1; i < ancestors.length; i++) {
             html += `<tr><th>${list[i - 1]}</th><td> : ${ancestors[i]}<td><tr>`
         };
         data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr>`);
         html += `<tr><th>Montant</th><td> : ${format(data.value)} €<td><tr>`;
+        // On affiche le tableau dans le #info
+        var info = d3.select("#info");
         info.html(`<table>${html}</table>`)
             .style("visibility", "visible");
     }
-
-    showInfo(root);
+    if (!previ) {showInfo(root)};
+    ;
 
     //On prend la valeur du budget prévisionnel
     let budgetPrevi;
@@ -296,13 +301,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // Obtention des paramètres GET reçus par la page
     const urlParams = new URLSearchParams(window.location.search);
     const params = urlParams.toString();
+    const previ = urlParams.has('budget_previ');
     // Renvoi des paramètres à la page /data
     const dataUrl = `/data?${params}`;
     // Récupération des données JSON pour le diagramme
     d3.json(dataUrl).then(data => {
         // Appel de la fonction de création du diagramme avec les données
         const chartContainer = document.getElementById('chart');
-        chartContainer.appendChild(chart(data));
+        chartContainer.appendChild(chart(data, previ));
     }).catch(error => {
         console.log(error);
     });
