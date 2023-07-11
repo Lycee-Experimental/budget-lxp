@@ -160,8 +160,9 @@ const chart = (data, previ) => {
             .attrTween("transform", d => () => labelTransform(d.current));
 
         //Mise à jour des informations de navigation
-        if (!previ) {showInfo(root)};
+        if (!previ) {showInfo(p)};
         pourcentage(p);
+        pourcentage_total(p);
     }
 
     //Affichage des informations de navigation
@@ -183,9 +184,7 @@ const chart = (data, previ) => {
         var info = d3.select("#info");
         info.html(`<table>${html}</table>`)
             .style("visibility", "visible");
-    }
-    if (!previ) {showInfo(root)};
-    ;
+    };
 
     //On prend la valeur du budget prévisionnel
     let budgetPrevi;
@@ -194,85 +193,76 @@ const chart = (data, previ) => {
         .then(response => response.json())
         .then(data => {
             budgetPrevi = d3.hierarchy(data).sum(d => d.value);
-
-                // Appelle la fonction "pourcentage" pour chaque objet enfant
-
-    pourcentage_total(root);
+            // Appelle la fonction "pourcentage" après que fetch(dataPrevi)
+            pourcentage_total(root);
         });
 
+
+    if (!previ) {showInfo(root)};    
+
+
+    //Affichage des informations de navigation
+    function showInfo(data) {
+        // On affiche l'info
+        var card = d3.select("#informations");
+        card.style("visibility", "visible");
+        // On traite les données
+        const ancestors = data.ancestors().map(data => data.data.name).reverse();
+        const list = ['Domaine', 'Activité', 'Compte', 'Fournisseur', 'Détail'];
+        // On les met en forme de tableau
+        let html = '';
+        for (let i = 1; i < ancestors.length; i++) {
+            html += `<tr><th>${list[i - 1]}</th><td> : ${ancestors[i]}<td><tr>`
+        };
+        data.data.date && (html += `<tr><th>Date</th><td> : ${data.data.date}<td><tr>`);
+        html += `<tr><th>Montant</th><td> : ${format(data.value)} €<td><tr>`;
+        // On affiche le tableau dans le #info
+        var info = d3.select("#info");
+        info.html(`<table>${html}</table>`)
+            .style("visibility", "visible");
+    };
+
+        
     // Pourcentage du budget dépensé 
-    let budget;
-    let nom_domaine;
     function pourcentage(d) {
-        const nameToFind = d.data.name;
-        const node = budgetPrevi.descendants().find(d => d.data.name === nameToFind);
-        const travaux = budgetPrevi.descendants().find(d => d.data.name === "Travaux");
+        const nom_domaine = d.data.name;
+        const node = budgetPrevi.descendants().find(d => d.data.name === nom_domaine);
         if (node) {
           budget = node.value;
-          nom_domaine = nameToFind;
-
         } 
         const pourcentage_budget = d.value * 100 / budget;
-
+        const couleur_pourcentage=get_color(pourcentage_budget);
         var pourcentage = d3.select('#pourcentage');
-
-        var conditions = [
-            { min: 90, classe: "is-danger" },
-            { min: 70, classe: "is-warning" },
-            { min: 50, classe: "is-link" },
-            { min: 40, classe: "is-info" },
-            { min: 20, classe: "is-primary" },
-            { min: 0, classe: "is-success" }
-        ];
-
-        var couleur_pourcentage = "is-success";
-
-        for (var i = 0; i < conditions.length; i++) {
-            if (pourcentage_budget > conditions[i].min) {
-                couleur_pourcentage = conditions[i].classe;
-                break;
-            }
-        }
-
         pourcentage.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> (${format(d.value)} €) de ${format(budget)} € de <strong>${nom_domaine || "Global avec Travaux"}</strong> </center>`);
-
+    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget)} € de <strong>${nom_domaine || "annuel avec Travaux"}</strong> </center>`);
     }
 
     // Pourcentage du budget dépensé total
     function pourcentage_total(d) {
-        const nameToFind = d.data.name;
-        const node = budgetPrevi.descendants().find(d => d.data.name === nameToFind);
-        const travaux = budgetPrevi.descendants().find(d => d.data.name === "Travaux");
-        if (node) {
-          budget = node.value - travaux.value;
-          nom_domaine = nameToFind;
+        
+        const budget_total = budgetPrevi.value - budgetPrevi.descendants().find(d => d.data.name === "Travaux").value;
+        const pourcentage_budget = d.value * 100 / budget_total;
+        const pourcentage_tot = d3.select('#pourcentage_tot');
+        
+        const couleur_pourcentage = get_color(pourcentage_budget);
+        
+        pourcentage_tot.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
+                <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget_total)} € de <strong>budget annuel</strong></center>`);
+    }
 
-        } 
-        const pourcentage_budget = d.value * 100 / budget;
-
-        var pourcentage_tot = d3.select('#pourcentage_tot');
-
-        var conditions = [
-            { min: 90, classe: "is-danger" },
-            { min: 70, classe: "is-warning" },
-            { min: 50, classe: "is-link" },
-            { min: 40, classe: "is-info" },
-            { min: 20, classe: "is-primary" },
+    // Fonction pour déterminer la couleur de la barre de jauge
+    function get_color(percent) {
+        const conditions = [
+            { min: 80, classe: "is-danger" },
+            { min: 60, classe: "is-warning" },
+            { min: 40, classe: "is-primary" },
             { min: 0, classe: "is-success" }
         ];
-
-        var couleur_pourcentage = "is-success";
-
         for (var i = 0; i < conditions.length; i++) {
-            if (pourcentage_budget > conditions[i].min) {
-                couleur_pourcentage = conditions[i].classe;
-                break;
+            if (percent > conditions[i].min) {
+                return conditions[i].classe;
             }
         }
-
-        pourcentage_tot.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-                <center><strong>${pourcentage_budget.toFixed(1)} %</strong> (${format(d.value)} €) de ${format(budget)} € de <strong>Global</strong></center>`);
     }
 
     // Fonction pour déterminer la visibilité d'un segment
