@@ -193,7 +193,7 @@ def create_node(name):
 
 
 def fonct_traduction(cle, dico=traduction):
-    return dico.get(cle, cle)
+    return dico.get(cle, cle.title())
 
 def get_data(debut, fin):
     # URL des fichiers Excel contenant les données
