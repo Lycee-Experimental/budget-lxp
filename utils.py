@@ -158,6 +158,7 @@ traduction = {
                 "CYLIAH CREATIONS": "Cyliah Creations",
                 "POP'ART DESIGN": "Pop'art design",
                 "TIRVIT": "Tirvit",
+                "OFFICE PUBLIC DE L HABITAT  SILENE": "Silène",
 }
 
 
@@ -234,7 +235,7 @@ def get_data(debut, fin):
         activite = fonct_traduction(row['Activité'])
         libelle_compte = fonct_traduction(row['Libellé compte'].strip()).title() 
         fournisseur = fonct_traduction(row['Fournisseur'], traduction_fournisseur) if (row['Nom du fournisseur / élève'] == 0) else row['Nom du fournisseur / élève']
-        fournisseur = fonct_traduction(fournisseur)
+        fournisseur = fonct_traduction(fournisseur.strip())
 
 
         libelle = row['Libellé 1'].strip()
