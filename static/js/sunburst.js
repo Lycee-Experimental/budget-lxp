@@ -222,19 +222,21 @@ const chart = (data, previ) => {
             .style("visibility", "visible");
     };
 
-        
+    let nom_domaine2;   
     // Pourcentage du budget dépensé 
     function pourcentage(d) {
-        const nom_domaine = d.data.name;
+        let nom_domaine = d.data.name;
         const node = budgetPrevi.descendants().find(d => d.data.name === nom_domaine);
         if (node) {
           budget = node.value;
+          nom_domaine2 = node.data.name;
         } 
+        console.log(nom_domaine, nom_domaine2)
         const pourcentage_budget = d.value * 100 / budget;
         const couleur_pourcentage=get_color(pourcentage_budget);
         var pourcentage = d3.select('#pourcentage');
         pourcentage.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget)} € de <strong>${nom_domaine || "annuel avec Travaux"}</strong> </center>`);
+    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget)} € de <strong>${nom_domaine2 || "annuel avec Travaux"}</strong> </center>`);
     }
 
     // Pourcentage du budget dépensé total
