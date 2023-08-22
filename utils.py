@@ -59,12 +59,17 @@ budget_previ = {'name': '',
                                            {'name': '2 CEA XP',
                                             'value': 5000
                                             },
+                                            {'name': '13EAC',
+                                             'value': 3000
+                                            },
                                            {'name': '13REPLEXP',
                                             'value': 220
                                             }
                                            ]
                               },
-                             {'name': 'Repas', 'value': 5000},
+                             {'name': 'Repas', 
+                              'children':[{'name': '0LEXPMO', 'value': 5000}],
+                             },
                              {'name': 'Travaux', 'value': 80000}
                              ]
                 }
@@ -93,11 +98,13 @@ traduction = {
                 '0LEXPVIAB': 'Viabilisation',
                 '13REPLEXP': 'Reprographie',
                 '2 CEA XP': 'CEA (Région)',
+                '2CEAXP': 'CEA (Région)',
                 '040ALXP': "Com' externe",
                 'REPAS': 'Repas',
                 '0LEXPMO': 'Nourriture',
                 'TRAVAU': 'Travaux',
                 '0LEXPTVX': 'Travaux',
+                '13EAC': "Pass'Culture",
                 'FOURNITURES NON STOCKABLES - GAZ': 'Gaz',
                 'FOURNITURES NON STOCKABLES - ELECTRICITE': 'Electricité',
                 'FOURNITURES NON STOCKABLES - EAU': 'Eau',
