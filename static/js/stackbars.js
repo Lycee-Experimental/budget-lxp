@@ -26,7 +26,6 @@ const chart = rowdata => {
     const width = container.clientWidth - margin.left - margin.right;
     const height = container.clientHeight - margin.top - margin.bottom - 30;
     // Create an SVG element and append it to the chart container
-    console.log(width, height);
     const svg = d3.create("svg")
         .attr("viewBox", [0, 0, width, height])
         .attr("width", width)
@@ -65,7 +64,7 @@ const chart = rowdata => {
                 const rectData = {
                     ...child,
                     x: xPos,
-                    width: (child.value / maxValue) * width,
+                    width: (child.value / maxValue) / Math.max(getPourcentage(d)[0],100) *100 * width,
                 };
                 xPos += rectData.width;
                 return rectData;
