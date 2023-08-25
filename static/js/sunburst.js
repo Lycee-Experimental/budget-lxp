@@ -70,7 +70,7 @@ const chart = (data, previ) => {
             // On augmente la luminosité des couleurs en fonction du niveau de hierarchie
             return d3.color(color(d.data)).brighter(d.depth / 3);
         })
-        .attr("fill-opacity", d => arcVisible(d.current) ? (d.children ? 1 : 0.6) : 0)
+        .attr("fill-opacity", d => arcVisible(d.current) ? 1 : 0)
         .attr("pointer-events", d => arcVisible(d.current) ? "auto" : "none")
         .attr("d", d => arc(d.current));
 
