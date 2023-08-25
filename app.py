@@ -8,6 +8,9 @@ app = Flask(__name__)
 # Activation du rechargement automatique des templates
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+df = load_data()
+
+
 # Page d'accueil
 @app.route('/')
 def index():
@@ -42,5 +45,4 @@ def data():
 
 # Lancement de Flask
 if __name__ == '__main__':
-    df = load_data()
     app.run()
