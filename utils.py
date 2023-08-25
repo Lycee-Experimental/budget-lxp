@@ -195,7 +195,10 @@ def create_node(name):
 def fonct_traduction(cle, dico=traduction):
     return dico.get(cle, cle.title())
 
-def get_data(debut, fin):
+
+
+def load_data():
+    """Charge les données depuis le cloud"""
     # URL des fichiers Excel contenant les données
     excel_url = 'https://cloud.lycee-experimental.org/s/LMw46oacXzBgXLw/download/D%C3%A9penses.xlsx'
     excel_2022_url = 'https://cloud.lycee-experimental.org/s/aq4ZSABm2GS2eNL/download/D%C3%A9penses2022.xlsx'
@@ -219,17 +222,18 @@ def get_data(debut, fin):
     # Remplacement des valeurs NaN par une chaîne vide
     merged_df.fillna('', inplace=True)
     # Création de la structure pour le sunburst
+    return merged_df
+
+
+def get_data(df, debut, fin):
+    
     structure = create_node('')
 
     # Parcours des lignes du DataFrame
-    for _, row in merged_df.iterrows():
+    for _, row in df.iterrows():
         # Vérification si la date est comprise entre les dates de début et de fin
         if not is_date_between(row['Date comptable facture'], debut, fin):
             continue
-
-
-
-
         # Récupération des valeurs des colonnes
         domaine = fonct_traduction(row['Domaine'])
         activite = fonct_traduction(row['Activité'])
