@@ -38,9 +38,9 @@ def data():
     else :
         debut=request.args.get("debut") if request.args.get("debut") else None
         fin=request.args.get("fin") if request.args.get("fin") else None
-        return get_data(data,debut, fin)
+        return get_data(df,debut, fin)
 
 # Lancement de Flask
 if __name__ == '__main__':
-    data = load_data()
+    df = load_data()
     app.run()
