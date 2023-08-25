@@ -83,7 +83,7 @@ const chart = rowdata => {
             const tooltip = d3
                 .select("body")
                 .append("div")
-                .attr("class", "tooltip")
+                .attr("class", "tooltip card")
                 .style("left", event.pageX + "px")
                 .style("top", event.pageY + "px")
                 .html("<strong>"+d.data.name + " : </strong>" + d.value.toLocaleString("fr-FR", { style: "currency", currency: "EUR" }) + '<br>(' + getPourcentage(d)[0] + "% de " + getPourcentage(d)[1].toLocaleString("fr-FR", { style: "currency", currency: "EUR" })+")");

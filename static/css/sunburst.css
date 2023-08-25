@@ -4,6 +4,13 @@
     transition: .5s;
 }
 
+td, #tooltip td {
+    color:#8c9b9d;
+  }
+
+
+text {fill: black;}
+
 div.content_et_infos {
     height: 100vh;
 }
@@ -21,8 +28,6 @@ div.card#informations{
 
 #tooltip {
 position: absolute;
-background: #fff;
-border: 1px solid #ddd;
 padding: 5px;
 visibility: hidden;
 }
@@ -40,14 +45,6 @@ table th, #tooltip table th {
 svg {
     width: 100%;
     height: 100%;
-}
-
-div.tooltip {
-position: absolute;
-background: #fff;
-border: 1px solid #ddd;
-padding: 5px;
-visibility: hidden;
 }
 
     

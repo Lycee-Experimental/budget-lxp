@@ -128,8 +128,8 @@ const chart = (data, previ) => {
 
     //Ajouter des tooltips
     var tooltip = d3.select("body")
-        .append("div")
-        .attr("id", "tooltip")
+        .append("div").attr("class", "card")
+        .attr("id", "tooltip");
 
     // Fonction de gestion de l'événement de clic sur un segment
     function clicked(event, p) {
