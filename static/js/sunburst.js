@@ -114,9 +114,15 @@ const chart = (data, previ) => {
         .data(root.descendants().slice(1))
         .join("text")
         .attr("dy", "0.35em")
+        .text(d => d.data.name)
         .attr("fill-opacity", d => +labelVisible(d.current))
-        .attr("transform", d => labelTransform(d.current))
-        .text(d => d.data.name);
+        .attr("transform", d => labelTransform(d.current));
+        //.style("text-shadow", d => {
+        //    const opacity = +labelVisible(d.current);
+        //    const shadowColor = opacity === 0 ? "none" : `rgba(255, 255, 255, ${opacity})`;
+        //    return `0 0 2px ${shadowColor}`;
+        //  });
+
 
     // Ajout du cercle central pour la navigation
     const parent = g.append("circle")
@@ -151,13 +157,23 @@ const chart = (data, previ) => {
             })
             .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 1 : 0.6) : 0)
             .attr("pointer-events", d => arcVisible(d.target) ? "auto" : "none")
+            //.style("text-shadow", d => {
+            //    const opacity = +labelVisible(d.target);
+            //    const shadowColor = opacity === 0 ? "none" : `rgba(255, 255, 255, ${opacity})`;
+            //    return `0 0 2px ${shadowColor}`;
+            //})
             .attrTween("d", d => () => arc(d.current));
 
-        label.filter(function (d) {
-            return +this.getAttribute("fill-opacity") || labelVisible(d.target);
-        }).transition(t)
-            .attr("fill-opacity", d => +labelVisible(d.target))
-            .attrTween("transform", d => () => labelTransform(d.current));
+            label.filter(function (d) {
+                return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+            }).transition(t)
+                .attr("fill-opacity", d => +labelVisible(d.target))
+                //.style("text-shadow", d => {
+                //    const opacity = +labelVisible(d.target);
+                //    const shadowColor = opacity === 0 ? "none" : `rgba(255, 255, 255, ${opacity})`;
+                //    return `0 0 2px ${shadowColor}`;
+                //})
+                .attrTween("transform", d => () => labelTransform(d.current));
 
         //Mise à jour des informations de navigation
         if (!previ) {showInfo(p)};
@@ -236,20 +252,20 @@ const chart = (data, previ) => {
         const couleur_pourcentage=get_color(pourcentage_budget);
         var pourcentage = d3.select('#pourcentage');
         pourcentage.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget)} € de <strong>${nom_domaine2 || "annuel avec Travaux"}</strong> </center>`);
+    <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget)} € de <strong>${nom_domaine2 || "budget annuel"}</strong> </center>`);
     }
 
     // Pourcentage du budget dépensé total
     function pourcentage_total(d) {
-        
-        const budget_total = budgetPrevi.value - budgetPrevi.descendants().find(d => d.data.name === "Travaux").value;
+        const budget_total = budgetPrevi.value;
+        //const budget_total = budgetPrevi.value - budgetPrevi.descendants().find(d => d.data.name === "Travaux").value;
         const pourcentage_budget = d.value * 100 / budget_total;
         const pourcentage_tot = d3.select('#pourcentage_tot');
         
         const couleur_pourcentage = get_color(pourcentage_budget);
         
         pourcentage_tot.html(`<progress class="progress ${couleur_pourcentage}" value="${pourcentage_budget.toFixed(1)}" max="100"><p class="subtitle"></p></progress>
-                <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget_total)} € de <strong>budget annuel</strong></center>`);
+                <center><strong>${pourcentage_budget.toFixed(1)} %</strong> des ${format(budget_total)} € du <strong>budget annuel</strong></center>`);
     }
 
     // Fonction pour déterminer la couleur de la barre de jauge
