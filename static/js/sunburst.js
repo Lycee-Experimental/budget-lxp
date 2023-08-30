@@ -116,12 +116,12 @@ const chart = (data, previ) => {
         .attr("dy", "0.35em")
         .text(d => d.data.name)
         .attr("fill-opacity", d => +labelVisible(d.current))
-        .attr("transform", d => labelTransform(d.current));
-        //.style("text-shadow", d => {
-        //    const opacity = +labelVisible(d.current);
-        //    const shadowColor = opacity === 0 ? "none" : `rgba(255, 255, 255, ${opacity})`;
-        //    return `0 0 2px ${shadowColor}`;
-        //  });
+        .attr("transform", d => labelTransform(d.current))
+        .style("text-shadow", d => {
+            const opacity = +labelVisible(d.current);
+            const shadowColor = `rgba(255, 255, 255, ${opacity})`;
+            return `0 0 1px ${shadowColor}`;
+          });
 
 
     // Ajout du cercle central pour la navigation
@@ -157,22 +157,20 @@ const chart = (data, previ) => {
             })
             .attr("fill-opacity", d => arcVisible(d.target) ? (d.children ? 1 : 0.6) : 0)
             .attr("pointer-events", d => arcVisible(d.target) ? "auto" : "none")
-            //.style("text-shadow", d => {
-            //    const opacity = +labelVisible(d.target);
-            //    const shadowColor = opacity === 0 ? "none" : `rgba(255, 255, 255, ${opacity})`;
-            //    return `0 0 2px ${shadowColor}`;
-            //})
             .attrTween("d", d => () => arc(d.current));
 
             label.filter(function (d) {
                 return +this.getAttribute("fill-opacity") || labelVisible(d.target);
+            }).style("text-shadow", d => {
+                const opacity = +labelVisible(d.target);
+                const shadowColor = `rgba(255, 255, 255, ${opacity})`;
+                return `0 0 1px ${shadowColor}`;
+            });
+
+        label.filter(function (d) {
+                return +this.getAttribute("fill-opacity") || labelVisible(d.target);
             }).transition(t)
                 .attr("fill-opacity", d => +labelVisible(d.target))
-                //.style("text-shadow", d => {
-                //    const opacity = +labelVisible(d.target);
-                //    const shadowColor = opacity === 0 ? "none" : `rgba(255, 255, 255, ${opacity})`;
-                //    return `0 0 2px ${shadowColor}`;
-                //})
                 .attrTween("transform", d => () => labelTransform(d.current));
 
         //Mise à jour des informations de navigation
