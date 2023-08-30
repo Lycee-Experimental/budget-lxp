@@ -59,9 +59,9 @@ budget_previ = {'name': '',
                                            {'name': '2 CEA XP',
                                             'value': 5000
                                             },
-                                            {'name': '13EAC',
-                                             'value': 3000
-                                            },
+                                            #{'name': '13EAC',
+                                            # 'value': 3000
+                                            #},
                                            {'name': '13REPLEXP',
                                             'value': 220
                                             }
@@ -222,7 +222,7 @@ def load_data():
     # Remplacement des valeurs NaN par une chaîne vide
     merged_df.fillna('', inplace=True)
     # Création de la structure pour le sunburst
-    merged_df = merged_df[~((merged_df['Domaine'] == 'REPAS') | (merged_df['Domaine'] == 'TRAVAU'))]
+    merged_df = merged_df[~((merged_df['Domaine'] == 'REPAS') | (merged_df['Domaine'] == 'TRAVAU') | (merged_df['Activité'] == '13EAC'))]
     return merged_df
 
 
